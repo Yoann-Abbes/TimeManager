@@ -1,0 +1,10 @@
+.md-list-item-content {
+    background-color: white;
+}
+a.router-link-exact-active {
+    font-weight: bold;
+}
+
+.md-dialog {
+    background-color: white;
+}
