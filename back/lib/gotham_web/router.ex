@@ -1,5 +1,6 @@
 defmodule GothamWeb.Router do
   use GothamWeb, :router
+  use PhoenixSwagger
   import Plug.Conn
 
   pipeline :browser do
@@ -13,6 +14,16 @@ defmodule GothamWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
   end
+
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "Gotham"
+      }
+    }
+  end  
 
   scope "/", GothamWeb do
     pipe_through :browser
@@ -40,6 +51,11 @@ defmodule GothamWeb.Router do
 
 
   end
+
+  scope "/api/swagger" do
+      forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :gotham, swagger_file: "swagger.json"
+    end
+
 
 
 
