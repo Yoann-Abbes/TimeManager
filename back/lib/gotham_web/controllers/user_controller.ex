@@ -1,5 +1,6 @@
 defmodule GothamWeb.UserController do
   use GothamWeb, :controller
+  use PhoenixSwagger
 
   alias Gotham.Auth
   alias Gotham.Auth.User
@@ -48,4 +49,30 @@ defmodule GothamWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+def swagger_definitions do
+  %{
+    users: swagger_schema do
+      title "users"
+      description "A user of the application"
+      properties do
+        username :string, "Users name", required: true
+        email :string, "Users email", required: true
+      end
+      example %{
+        username: "test",
+        email: "test@123.com"
+      }
+    end
+  }
+end
+
+swagger_path :show do
+    get "/api/users/:id"
+    paging size: "page[size]", number: "page[number]"
+    response 200, "OK", Schema.ref(:Users)
+  end
+
+
+
 end

@@ -7,10 +7,10 @@ defmodule Gotham.Mixfile do
       version: "0.0.1",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+      compilers: [:phoenix, :gettext, :phoenix_swagger] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
     ]
   end
 
@@ -44,6 +44,8 @@ defmodule Gotham.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
+      {:phoenix_swagger, git: "https://github.com/xerions/phoenix_swagger.git"},
+      {:ex_json_schema, "~> 0.5"},
       {:cowboy, "~> 1.0"}
     ]
   end

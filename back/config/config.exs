@@ -9,6 +9,18 @@ use Mix.Config
 config :gotham,
   ecto_repos: [Gotham.Repo]
 
+config :gotham, Gotham.Web.Endpoint,
+  url: [host: "localhost"] # "host": "localhost:4000" in generated swagger
+
+config :gotham, :phoenix_swagger,
+  swagger_files: %{
+    "priv/static/swagger.json" => [
+      router: GothamWeb.Router#,     # phoenix routes will be converted to swagger paths
+      #endpoint: GothamWeb.Endpoint  # (optional) endpoint config used to set host, port and https schemes.
+    ]
+  }
+
+
 # Configures the endpoint
 config :gotham, GothamWeb.Endpoint,
   url: [host: "localhost"],
