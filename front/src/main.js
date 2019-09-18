@@ -5,13 +5,17 @@ import VueMaterial from 'vue-material'
 import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
 import moment from 'vue-moment'
 import Raphael from 'raphael/raphael'
+import ClockManager from "./components/ClockManager";
+
 global.Raphael = Raphael
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import './assets/css/styles.css'
+import {clockManagerService} from "./_services/clockmanager.service";
 
 Vue.config.productionTip = false
+
 Vue.use(VueMaterial)
 Vue.use(MdButton)
 Vue.use(MdContent)
@@ -55,7 +59,7 @@ new Vue({
       this.user.status = status
     }
   },
-  mounted(){
+  created(){
     router.push('/')
   },
   render: h => h(App),
