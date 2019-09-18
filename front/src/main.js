@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from './_store'
 import router from './_helpers/router'
 import VueMaterial from 'vue-material'
 import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
@@ -27,6 +28,7 @@ new Vue({
       status: ''
     }
   },
+  store,
   router,
   computed: {
     getCurrentUser(){
