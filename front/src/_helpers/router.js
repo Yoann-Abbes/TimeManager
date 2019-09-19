@@ -1,18 +1,19 @@
-import Vue from  'vue'
-import Router from  'vue-router'
+import Vue from 'vue'
+import Router from 'vue-router'
 import Home from "../components/Home";
 import WorkingTimes from "../components/WorkingTimes";
 import WorkingTime from "../components/WorkingTime";
 import ClockManager from "../components/ClockManager";
 import ChartManager from "../components/ChartManager";
+import Register from "../components/Register";
+import Login from "../components/Login";
 
 Vue.use(Router)
 
-const router = new  Router({
-    mode:  'history',
-    base:  process.env.BASE_URL,
-    routes: [
-        {
+const router = new Router({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [{
             path: '/workingtimes/:userId?',
             name: 'workingTimes',
             component: WorkingTimes,
@@ -35,10 +36,15 @@ const router = new  Router({
             component: ChartManager
         },
         {
-            path:  '/',
-            alias: '/home',
-            name:  'home',
-            component:  Home
+            path: '/register',
+            name: 'register',
+            component: Register
+        },
+        {
+            path: '/home',
+            //alias: '/home',
+            name: 'home',
+            component: Register
         },
         {
             path: '/*',
@@ -46,4 +52,4 @@ const router = new  Router({
         }
     ]
 })
-export  default  router;
+export default router;

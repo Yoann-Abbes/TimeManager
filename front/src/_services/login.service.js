@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 export const loginService = {
-    loginUser
-}
-
+        loginUser
+    }
+    //msg d'erreur si pb de call
 function loginUser(email, password) {
     return new Promise((resolve, reject) => {
         axios.post(process.env.VUE_APP_API_URL + '/api/users', {
