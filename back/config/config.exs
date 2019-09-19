@@ -5,6 +5,8 @@
 # is restricted to this project.
 use Mix.Config
 
+config :joken, default_signer: "secret"
+
 # General application configuration
 config :gotham,
   ecto_repos: [Gotham.Repo]

@@ -7,7 +7,6 @@ defmodule Gotham.Repo.Migrations.CreateWorkingtime do
       add :end, :naive_datetime
       add :user_id, references(:users, on_delete: :nothing)
 
-      timestamps()
     end
 
     create index(:workingtime, [:user_id])

@@ -5,6 +5,7 @@ defmodule Gotham.Auth do
 
   import Ecto.Query, warn: false
   alias Gotham.Repo
+  alias Gotham.Roles
 
   alias Gotham.Auth.User
 
@@ -36,6 +37,14 @@ defmodule Gotham.Auth do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  def get_role!(id) do
+    Repo.all(
+      from b in "roles",
+      where: b.id == ^id,
+      select: b.label
+    )
+  end
 
   def get_user_by!(email, username), do: Repo.get_by!(User, email: email, username: username)
 
@@ -70,6 +79,7 @@ defmodule Gotham.Auth do
 
   """
   def update_user(%User{} = user, attrs) do
+    IO.inspect attrs
     user
     |> User.changeset(attrs)
     |> Repo.update()

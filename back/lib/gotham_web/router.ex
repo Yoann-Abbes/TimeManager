@@ -37,6 +37,10 @@ defmodule GothamWeb.Router do
     post "/users", UserController, :create
     put "/users/:id", UserController, :update
     delete "/users/:id", UserController, :delete
+    
+    post "/users/sign_in", UserController, :sign_in
+    post "/users/sign_up", UserController, :sign_up
+    delete "/users/sign_out", UserController, :sign_out
 
     get "/workingtimes", WorkingTimeController, :index
     get "/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show_one
