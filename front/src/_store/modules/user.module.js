@@ -97,9 +97,11 @@ export const userModule = {
             commit('createLoading')
             userService.createUser(username, email, firstname, lastname, password, role).then(
                 success => {
+                    console.log("SUCCESS")
                     commit('createSuccess')
                 },
                 error => {
+                    console.log("ERROR !!!!!!!!!!!!!!!!!!!!")
                     commit('createError')
                 }
             )

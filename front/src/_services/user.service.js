@@ -7,12 +7,16 @@ export const userService = {
     deleteUser
 }
 
-function createUser(username, email) { //changer params
+function createUser(username, email, firstname, lastname, password, role) { //changer params
     return new Promise((resolve, reject) => {
         axios.post(process.env.VUE_APP_API_URL + '/api/users', {
                 user: {
                     username: username,
-                    email: email
+                    email: email,
+                    firstname: firstname,
+                    lastname: lastname,
+                    password: password,
+                    role: role
                 }
             })
             .then(success => {

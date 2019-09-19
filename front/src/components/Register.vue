@@ -7,6 +7,7 @@
         </div>
 
         <div class="form">
+          <div class="error" v-show="getRegisterStatus == 'error'">Error during your account creation, please try again</div>
           <form @submit.prevent="register">
             <md-field>
               <label>Username</label>
@@ -61,6 +62,11 @@ export default {
       }
     };
   },
+  computed: {
+    getRegisterStatus() {
+      return this.$store.getters["userModule/getCreateStatus"];
+    }
+  },
   methods: {
     ...mapActions(["registerUser", "createUserModule"]),
     register: function() {
@@ -104,5 +110,8 @@ export default {
 }
 .md-content {
   padding: 40px;
+}
+.error {
+  color: red;
 }
 </style>
