@@ -7,7 +7,7 @@
         </div>
 
         <div class="form">
-          <form @submit.prevent="registerUser">
+          <form @submit.prevent="register">
             <md-field>
               <label>Username</label>
               <md-input required v-model="registerForm.username"></md-input>
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     ...mapActions(["registerUser", "createUserModule"]),
-    registerUser: function() {
+    register: function() {
       const {
         email,
         username,
