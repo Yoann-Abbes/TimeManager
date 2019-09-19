@@ -7,7 +7,10 @@
         </div>
 
         <div class="form">
-          <div class="error" v-show="getRegisterStatus == 'error'">Error during your account creation, please try again</div>
+          <div
+            class="error"
+            v-show="getRegisterStatus == 'error'"
+          >Error during your account creation, please try again</div>
           <form @submit.prevent="register">
             <md-field>
               <label>Username</label>

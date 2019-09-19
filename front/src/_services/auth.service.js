@@ -6,7 +6,7 @@ export const authService = {
 
 function login(email, password) {
     return new Promise((resolve, reject) => {
-        axios.post(process.env.VUE_APP_API_URL + '/api/users', {
+        axios.post(process.env.VUE_APP_API_URL + '/login', {
                 email: email,
                 password: password
             })

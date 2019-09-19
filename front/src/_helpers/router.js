@@ -44,7 +44,7 @@ const router = new Router({
             path: '/home',
             //alias: '/home',
             name: 'home',
-            component: Register
+            component: Login
         },
         {
             path: '/*',

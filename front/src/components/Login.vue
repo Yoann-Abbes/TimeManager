@@ -6,6 +6,10 @@
           <div class="md-title">Please connect with your personal account</div>
         </div>
         <div class="form">
+          <div
+            class="error"
+            v-show="getLoginStatus == 'error'"
+          >Wrong password or email, please try again</div>
           <form @submit.prevent="login">
             <md-field>
               <label>E-mail</label>
@@ -39,6 +43,12 @@ export default {
       }
     };
   },
+  computed: {
+    getLoginStatus() {
+      return this.$store.getters["authModule/getStatus"];
+    }
+  },
+
   methods: {
     ...mapActions(["registerUser", "createUserModule"]),
     login: function() {
