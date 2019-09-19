@@ -9,7 +9,7 @@ export const userService = {
 
 function createUser(username, email, firstname, lastname, password, role) { //changer params
     return new Promise((resolve, reject) => {
-        axios.post(process.env.VUE_APP_API_URL + '/api/users', {
+        axios.post(process.env.VUE_APP_API_URL + '/api/users/sign_up', {
                 user: {
                     username: username,
                     email: email,

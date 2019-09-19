@@ -1,4 +1,5 @@
 import { authService } from '../../_services/auth.service'
+import router from '../../_helpers/router'
 
 export const authModule = {
     namespaced: true,
@@ -18,7 +19,7 @@ export const authModule = {
         },
         loginSuccess(state, payload) {
             state.status = 'success'
-            state.token = payload.token
+            state.token = payload.data.jwt
         },
         logout(state) {
             state.status = ''
@@ -39,7 +40,11 @@ export const authModule = {
         },
         logout({ commit }) {
             commit('logout')
-            authService.logout()
+            authService.logout().then(
+                success => {
+                    location.reload()
+                }
+            )
         }
     }
 }

@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from "../components/Home";
-import WorkingTimes from "../components/WorkingTimes";
-import WorkingTime from "../components/WorkingTime";
-import ClockManager from "../components/ClockManager";
-import ChartManager from "../components/ChartManager";
 import Register from "../components/Register";
 import Login from "../components/Login";
 
@@ -13,27 +9,11 @@ Vue.use(Router)
 const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [{
-            path: '/workingtimes/:userId?',
-            name: 'workingTimes',
-            component: WorkingTimes,
-            children: [{
-                path: '/workingtime/:userId?/:workingtimeId?',
-                name: 'workingTime.dialog',
-                components: {
-                    default: WorkingTime
-                }
-            }]
-        },
+    routes: [
         {
-            path: '/clock/:username?',
-            name: 'clockManager',
-            component: ClockManager
-        },
-        {
-            path: '/chartManager/:userId?',
-            name: 'chartManager',
-            component: ChartManager
+            path: '/login',
+            name: 'login',
+            component: Login
         },
         {
             path: '/register',
@@ -41,15 +21,27 @@ const router = new Router({
             component: Register
         },
         {
-            path: '/home',
-            //alias: '/home',
+            path: '/',
+            alias: '/home',
             name: 'home',
-            component: Login
+            component: Home
         },
         {
             path: '/*',
             redirect: { name: 'home' }
         }
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    // redirect to login page if not logged in and trying to access a restricted page
+    const publicPages = ['/login'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem('user');
+
+    if (authRequired && !loggedIn) {
+        return next('/login');
+    }
+    next();
 })
 export default router;

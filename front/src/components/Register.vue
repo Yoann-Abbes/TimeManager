@@ -32,10 +32,6 @@
               <label>Password</label>
               <md-input required v-model="registerForm.password" type="password" md-toggle-password></md-input>
             </md-field>
-            <md-field>
-              <label>Role (1, 2 ou 3)</label>
-              <md-input required v-model="registerForm.role"></md-input>
-            </md-field>
             <div class="actions md-layout md-alignment-center-space-between">
               <md-button class="md-raised md-primary" type="submit">Register</md-button>
             </div>
@@ -48,7 +44,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import store from "../_store/index.js";
 
 export default {
@@ -60,8 +55,7 @@ export default {
         username: "",
         password: "",
         lastname: "",
-        firstname: "",
-        role: ""
+        firstname: ""
       }
     };
   },
@@ -71,15 +65,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["registerUser", "createUserModule"]),
     register: function() {
       const {
         email,
         username,
         password,
         lastname,
-        firstname,
-        role
+        firstname
       } = this.registerForm;
 
       this.$store.dispatch("userModule/createUser", {
@@ -87,13 +79,11 @@ export default {
         email: email,
         firstname: firstname,
         lastname: lastname,
-        password: password,
-        role: role
-      });
+        password: password
+      })
     }
   }
-};
-/* eslint-disable */
+}
 </script>
 
 <style>

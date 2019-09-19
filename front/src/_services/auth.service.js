@@ -1,16 +1,21 @@
 import axios from 'axios'
 
 export const authService = {
-    login
+    login,
+    logout
 }
 
 function login(email, password) {
     return new Promise((resolve, reject) => {
-        axios.post(process.env.VUE_APP_API_URL + '/login', {
-                email: email,
-                password: password
+        axios.post(process.env.VUE_APP_API_URL + '/api/users/sign_in', {
+                user:{
+                    email: email,
+                    password: password
+                }
             })
             .then(success => {
+                localStorage.setItem('user', JSON.stringify(success.data))
+                axios.defaults.headers.common['Authorization'] = success.data.jwt;
                 resolve(success)
             })
             .catch(error => {
@@ -20,5 +25,13 @@ function login(email, password) {
 }
 
 function logout() {
-    console.log("LOGOUT");
+    return new Promise((resolve, reject) => {
+        axios.post(process.env.VUE_APP_API_URL + '/api/users/sign_out').then(
+            success => {
+                delete axios.defaults.headers.common['Authorization']
+                localStorage.removeItem('user')
+                resolve()
+            }
+        )
+    })
 }

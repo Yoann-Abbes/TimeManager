@@ -8,8 +8,9 @@ export const userModule = {
             id: '',
             username: '',
             email: '',
-            role: '',
-            skill: ''
+            firstname: '',
+            lastname: '',
+            role: ''
         },
         create: {
             status: ''
@@ -25,6 +26,8 @@ export const userModule = {
             id: '',
             username: '',
             email: '',
+            firstname: '',
+            lastname: '',
             role: '',
             skill: ''
         },
@@ -93,15 +96,13 @@ export const userModule = {
         }
     },
     actions: {
-        createUser({ commit }, { username, email, firstname, lastname, password, role }) {
+        createUser({ commit }, { username, email, firstname, lastname, password }) {
             commit('createLoading')
-            userService.createUser(username, email, firstname, lastname, password, role).then(
+            userService.createUser(username, email, firstname, lastname, password).then(
                 success => {
-                    console.log("SUCCESS")
                     commit('createSuccess')
                 },
                 error => {
-                    console.log("ERROR !!!!!!!!!!!!!!!!!!!!")
                     commit('createError')
                 }
             )

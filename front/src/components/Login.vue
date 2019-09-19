@@ -31,54 +31,48 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import store from "../_store/index.js";
 
-export default {
-  data() {
-    return {
-      loginForm: {
-        email: "",
-        password: ""
+  export default {
+    data() {
+      return {
+        loginForm: {
+          email: "",
+          password: ""
+        }
       }
-    };
-  },
-  computed: {
-    getLoginStatus() {
-      return this.$store.getters["authModule/getStatus"];
-    }
-  },
-
-  methods: {
-    ...mapActions(["registerUser", "createUserModule"]),
-    login: function() {
-      const { email, password } = this.loginForm;
-      this.$store.dispatch("authModule/login", {
-        email: email,
-        password: password
-      });
+    },
+    methods: {
+      login: function() {
+        const { email, password } = this.loginForm;
+        this.$store.dispatch("authModule/login", {
+          email: email,
+          password: password
+        }).then(
+          success => {
+            this.$router.push('/home')
+          }
+        )
+      }
     }
   }
-};
-/* eslint-disable */
 </script>
 
 <style>
-.centered-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  height: 100vh;
-}
-.title {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.form {
-  margin-bottom: 60px;
-}
-.md-content {
-  padding: 40px;
-}
+  .centered-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100vh;
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .form {
+    margin-bottom: 60px;
+  }
+  .md-content {
+    padding: 40px;
+  }
 </style>
