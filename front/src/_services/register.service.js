@@ -5,7 +5,6 @@ export const registerService = {
 }
 
 function registerUser(username, email, firstname, lastname, password, role) {
-    console.log("CDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
     return new Promise((resolve, reject) => {
         axios.post(process.env.VUE_APP_API_URL + '/api/users', {
                 user: {

@@ -73,7 +73,7 @@ export default {
     ...mapGetters(["todo"])
   },
   methods: {
-    ...mapActions(["registerUser", "registerUserModule"]),
+    ...mapActions(["registerUser", "createUserModule"]),
     registerUser: function() {
       //this.registerUserModule("tamere");
       const {
@@ -92,18 +92,20 @@ export default {
       if (!lastname) this.errors += "Lastname required.";
       if (!firstname) this.errors += "Firstname required.";
       if (!role) this.errors += "Role required.";
-
       if (!email || !this.validEmail(email))
         this.errors += " Valid email required.";
-      if (!this.errors.length)
-        this.registerUserModule(username, email, firstname, lastname, password, role).then(
-          success => {
-            console.log(success);
-          },
-          error => {
-            console.error(error);
-          }
-        );
+      
+      if (!this.errors.length) {
+        this.$store.dispatch('userModule/createUserModule', {username: username, email: email, firstname: firstname, lastname: lastname, password: password, role: role})        
+        //this.createUserModule(username, email, firstname, lastname, password, role).then(
+        //  success => {
+        //    console.log(success);
+        //  },
+        //  error => {
+        //    console.error(error);
+        //  }
+        //);
+      }
     },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
