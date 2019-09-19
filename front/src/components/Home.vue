@@ -1,14 +1,16 @@
 <template>
   <div>
-home
+    HOME
+    <button @click.prevent="logout">logout</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  methods: {
+    logout(){
+      this.$store.dispatch('authModule/logout')
+    }
   }
 }
 </script>
