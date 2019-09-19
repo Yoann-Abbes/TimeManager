@@ -89,7 +89,8 @@ defmodule GothamWeb.UserController do
 
   def sign_out(conn, %{"user" => user_params}) do
     
-    token = Map.get(user_params, "x-xsrf-token")
+    token = Enum.at(get_req_header(conn, "x-xsrf-token"), 0)
+    IO.inspect token
     {:ok, claims} = Gotham.Guardian.revoke(token)
       send_resp(conn, :no_content, "")
   end

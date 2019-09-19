@@ -46,7 +46,7 @@ defmodule GothamWeb.Router do
   
     post "/users/sign_in", UserController, :sign_in
     post "/users/sign_up", UserController, :sign_up
-    delete "/users/sign_out", UserController, :sign_out
+    post "/users/sign_out", UserController, :sign_out
 
     get "/workingtimes", WorkingTimeController, :index
     get "/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show_one
