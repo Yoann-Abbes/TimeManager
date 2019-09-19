@@ -93,7 +93,7 @@ export const userModule = {
         }
     },
     actions: {
-        createUserModule({ commit }, { username, email, firstname, lastname, password, role }) {
+        createUser({ commit }, { username, email, firstname, lastname, password, role }) {
             commit('createLoading')
             userService.createUser(username, email, firstname, lastname, password, role).then(
                 success => {

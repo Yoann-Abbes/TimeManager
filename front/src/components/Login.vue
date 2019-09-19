@@ -35,6 +35,8 @@
 
 <script>
 import { loginService } from "../_services/login.service";
+import { mapActions, mapGetters } from "vuex";
+import store from "../_store/index.js";
 
 export default {
   data() {
@@ -47,6 +49,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["registerUser", "createUserModule"]),
     loginUser: function() {
       const { email, password } = this.loginForm;
       this.errors = "";
@@ -55,16 +58,11 @@ export default {
       if (!email || !this.validEmail(email))
         this.errors += " Valid email required.";
       if (!this.errors.length)
-        loginService.loginUser(email, password).then(
-          success => {
-            console.log(success);
-          },
-          error => {
-            console.error(error);
-          }
-        );
-    },
-    validEmail: function(email) {
+        this.$store.dispatch("authModule/login", {
+          email: email,
+          password: password
+        });
+    },  validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     }

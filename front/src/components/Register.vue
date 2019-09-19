@@ -50,7 +50,6 @@
 <script>
 //import { loginService } from "../_services/login.service";
 import { mapActions, mapGetters } from "vuex";
-//import ...mapAction ({'test'}),
 import store from "../_store/index.js";
 
 //store.
@@ -68,9 +67,6 @@ export default {
         role: ""
       }
     };
-  },
-  computed: {
-    ...mapGetters(["todo"])
   },
   methods: {
     ...mapActions(["registerUser", "createUserModule"]),
@@ -94,9 +90,16 @@ export default {
       if (!role) this.errors += "Role required.";
       if (!email || !this.validEmail(email))
         this.errors += " Valid email required.";
-      
+
       if (!this.errors.length) {
-        this.$store.dispatch('userModule/createUserModule', {username: username, email: email, firstname: firstname, lastname: lastname, password: password, role: role})        
+        this.$store.dispatch("userModule/createUser", {
+          username: username,
+          email: email,
+          firstname: firstname,
+          lastname: lastname,
+          password: password,
+          role: role
+        });
         //this.createUserModule(username, email, firstname, lastname, password, role).then(
         //  success => {
         //    console.log(success);
