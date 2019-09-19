@@ -25,7 +25,6 @@
 
         <div class="actions md-layout md-alignment-center-space-between">
           <md-button class="md-raised md-primary" @click="loginUser">Log in</md-button>
-          <md-button class="md-raised md-primary" @click="loginUser">Register</md-button>
         </div>
       </md-content>
       <div class="background" />
@@ -34,7 +33,6 @@
 </template>
 
 <script>
-import { loginService } from "../_services/login.service";
 import { mapActions, mapGetters } from "vuex";
 import store from "../_store/index.js";
 
