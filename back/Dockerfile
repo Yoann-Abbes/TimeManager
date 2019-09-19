@@ -14,7 +14,7 @@ WORKDIR /app/back
 RUN mix local.hex --force \
     && apt-get update -yq \
     && apt-get install curl gnupg -yq \
-    && apt-get install inotify-tools \
+    && apt-get install inotify-tools -y \
     && apt-get install gcc \
     && curl -sL https://deb.nodesource.com/setup_8.x | bash \
     && apt-get install nodejs -yq \
