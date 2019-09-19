@@ -2,6 +2,12 @@ defmodule GothamWeb.Router do
   use GothamWeb, :router
   use PhoenixSwagger
   import Plug.Conn
+  alias GothamWeb.Guardian
+
+
+  pipeline :jwt_authenticated do
+    plug Guardian.AuthPipeline
+  end
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -32,12 +38,12 @@ defmodule GothamWeb.Router do
 
   scope "/api", GothamWeb do
     pipe_through :api
-    get "/users/:id", UserController, :show
+    #get "/users/:id", UserController, :show
     get "/users", UserController, :show_params
     post "/users", UserController, :create
     put "/users/:id", UserController, :update
     delete "/users/:id", UserController, :delete
-    
+  
     post "/users/sign_in", UserController, :sign_in
     post "/users/sign_up", UserController, :sign_up
     delete "/users/sign_out", UserController, :sign_out
@@ -55,6 +61,13 @@ defmodule GothamWeb.Router do
 
 
   end
+
+  scope "/api", GothamWeb do
+    pipe_through [:api, :jwt_authenticated]
+
+    get "/users/:id", UserController, :show
+  end
+
 
   scope "/api/swagger" do
       forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :gotham, swagger_file: "swagger.json"

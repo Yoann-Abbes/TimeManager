@@ -9,6 +9,35 @@ defmodule Gotham.Auth do
 
   alias Gotham.Auth.User
 
+  alias Gotham.Guardian
+  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+
+  def token_sign_in(username, password) do
+    case email_password_auth(username, password) do
+      {:ok, user} ->
+        Guardian.encode_and_sign(user)
+      _ ->
+        {:error, :unauthorized}
+    end
+  end
+
+  defp email_password_auth(username, password) when is_binary(username) and is_binary(password) do
+  IO.puts password
+  user = get_by_username(username)
+  IO.inspect user
+    #with {:ok, user} <- get_by_username(username),
+  verify_password(password, user)
+  end
+
+  defp verify_password(password, %User{} = user) when is_binary(password) do
+    if Bcrypt.verify_pass(password, user.password) do
+      {:ok, user}
+    else
+      {:error, :invalid_password}
+    end
+  end
+
+
   @doc """
   Returns the list of users.
 
@@ -47,6 +76,8 @@ defmodule Gotham.Auth do
   end
 
   def get_user_by!(email, username), do: Repo.get_by!(User, email: email, username: username)
+
+  def get_by_username(username), do: Repo.get_by!(User, username: username)
 
   @doc """
   Creates a user.

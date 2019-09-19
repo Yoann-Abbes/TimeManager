@@ -18,4 +18,10 @@ defmodule GothamWeb.FallbackController do
     |> put_view(GothamWeb.ErrorView)
     |> render(GothamWeb.ErrorView, :"404")
   end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "Login error"})
+  end
 end

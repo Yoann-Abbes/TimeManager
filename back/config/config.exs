@@ -5,7 +5,9 @@
 # is restricted to this project.
 use Mix.Config
 
-config :joken, default_signer: "secret"
+config :gotham, Gotham.Guardian,
+       issuer: "gotham",
+       secret_key: "h7/7Je1YdDnD8AHqRsa9j/xbHwoam3zXv8Am/A2G0hRBwLqmITkdft1jhA/rFD1+"
 
 # General application configuration
 config :gotham,

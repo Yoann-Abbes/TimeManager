@@ -25,7 +25,6 @@ RUN mix local.hex --force \
 # Compile the project
 RUN mix local.rebar --force
 RUN mix deps.get
-RUN cd deps/bcrypt_elixir && make clean && make && cd -
 RUN mix do compile
 
 CMD ["/app/back/entrypoint.sh"]

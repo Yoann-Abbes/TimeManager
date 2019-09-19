@@ -3,7 +3,7 @@ defmodule GothamWeb.UserController do
   use PhoenixSwagger
   import Bcrypt
 
-  
+  alias Gotham.Guardian
   alias Gotham.Auth
   alias Gotham.Auth.User
 
@@ -23,9 +23,14 @@ defmodule GothamWeb.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    user = Auth.get_user!(id)
-    render(conn, "show.json", user: user)
+  # def show(conn, %{"id" => id}) do
+  #   user = Auth.get_user!(id)
+  #   render(conn, "show.json", user: user)
+  # end
+
+  def show(conn, _params) do
+     user = Guardian.Plug.current_resource(conn)
+     conn |> render("user.json", user: user)
   end
 
   def show_params(conn, %{}) do
@@ -54,19 +59,13 @@ defmodule GothamWeb.UserController do
 
   def sign_in(conn, %{"user" => user_params}) do
     
-    if Map.has_key?(user_params, "email") 
-      and Map.has_key?(user_params, "username")
-      and Map.has_key?(user_params, "password") do
-      user = Auth.get_user_by!(Map.get(user_params, "email"), Map.get(user_params, "username"))
-        if Bcrypt.verify_pass(Map.get(user_params, "password"), user.password) do
-          role = Auth.get_role!(user.roleId)          
-          extra_claims = %{"id" => user.id, "role" => role}
-          token = Gotham.Token.generate_and_sign!(extra_claims)
-          {:ok, claims} = Gotham.Token.verify_and_validate(token)
-          with {:ok, %User{} = user} <- user = Auth.update_user(user, %{"token" => token}) do
-            json(conn, %{"token" => token})
-        end
-      end
+    username = Map.get(user_params, "username")
+    password = Map.get(user_params, "password")
+    case Auth.token_sign_in(username, password) do
+    {:ok, token, _claims} ->
+      conn |> render("jwt.json", jwt: token)
+    _ ->
+      {:error, :unauthorized}
     end
   end
 
@@ -88,12 +87,11 @@ defmodule GothamWeb.UserController do
     end
   end
 
-  def sign_out(conn, %{}) do
-    params = conn.query_params
-    userId = Map.get(params, "id")
-    with {:ok, %User{}} <- Auth.delete_user_token(userId) do
+  def sign_out(conn, %{"user" => user_params}) do
+    
+    token = Map.get(user_params, "x-xsrf-token")
+    {:ok, claims} = Gotham.Guardian.revoke(token)
       send_resp(conn, :no_content, "")
-    end
   end
 
   def swagger_definitions do
