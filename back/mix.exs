@@ -35,6 +35,9 @@ defmodule Gotham.Mixfile do
     [
       {:phoenix, "~> 1.3.4"},
       {:json, "~> 1.2"},
+      {:guardian, "~> 1.2"},
+      {:bcrypt_elixir, "~> 2.0"},
+      {:jason, "~> 1.1"},
       {:phoenix_pubsub, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
       {:plug_cowboy, "~> 1.0"},
