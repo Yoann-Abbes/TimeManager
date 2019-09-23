@@ -120,6 +120,39 @@
         "description": "Show current users data"
       }
     },
+    "/add_in_team": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add a user to a manager's team",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "integer",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "Users id"
+          }
+        ],
+        "operationId": "GothamWeb.UserController.add_in_team",
+        "description": "Add a user to a manager's team"
+      }
+    },
     "/:userId/:workingtimeId": {
       "get": {
         "tags": [
@@ -405,6 +438,14 @@
           "type": "string",
           "description": "Users name"
         },
+        "team": {
+          "type": "integer",
+          "description": "Ids of users, only for managers"
+        },
+        "role_id": {
+          "type": "integer",
+          "description": "Users role Id"
+        },
         "password": {
           "type": "string",
           "description": "Users password"
@@ -424,6 +465,8 @@
       },
       "example": {
         "username": "test",
+        "team": "[1, 2, 3]",
+        "role_id": "2",
         "password": "2uto3ihg]1081+_92752'",
         "lastname": "doe",
         "firstname": "john",

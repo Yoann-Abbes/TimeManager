@@ -13,7 +13,11 @@ defmodule GothamWeb.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       email: user.email,
-      username: user.username}
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      role_id: user.role_id,
+      team: user.team}
   end
 
   def render("jwt.json", %{jwt: jwt}) do

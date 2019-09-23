@@ -63,7 +63,8 @@ defmodule Gotham.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      "swagger": ["phx.swagger.generate priv/static/swagger.json --router Gotham.Router --endpoint Gotham.Endpoint"]
     ]
   end
 end

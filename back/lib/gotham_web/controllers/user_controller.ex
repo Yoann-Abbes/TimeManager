@@ -25,6 +25,17 @@ defmodule GothamWeb.UserController do
     end
   end
 
+  def add_in_team(conn, %{"id" => id}) do
+    user = Guardian.Plug.current_resource(conn)
+
+    if user.role_id == 3 || user.role_id == 2 do
+    Auth.update_team(user, id)
+    render(conn, "show.json", user: user)
+    else
+      {:error, :unauthorized}
+    end
+  end
+
   def show(conn, _params) do
      user = Guardian.Plug.current_resource(conn)
      conn |> render("show.json", user: user)
@@ -44,7 +55,7 @@ defmodule GothamWeb.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Auth.get_user!(id)
-    #user = Guardian.Plug.current_resource(conn)
+    current_user = Guardian.Plug.current_resource(conn)
     with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
@@ -52,7 +63,7 @@ defmodule GothamWeb.UserController do
 
   def remove(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
-    #user = Guardian.Plug.current_resource(conn)
+    current_user = Guardian.Plug.current_resource(conn)
     with {:ok, %User{}} <- Auth.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
@@ -82,7 +93,6 @@ defmodule GothamWeb.UserController do
         with {:ok, %User{} = user} <- Auth.create_user(user_params) do
         conn
         |> put_status(:created)
-        |> put_resp_header("location", user_path(conn, :show, user))
         |> render("show.json", user: user)
       end
     end
@@ -106,13 +116,17 @@ defmodule GothamWeb.UserController do
           firstname :string, "Users firstname", required: true
           lastname :string, "Users lastname", required: true
           password :string, "Users password", required: true
+          role_id :integer, "Users role Id"
+          team :integer, "Ids of users, only for managers"
         end
         example %{
           username: "test",
           firstname: "john",
           lastname: "doe",
           password: "2uto3ihg]1081+_92752'",
-          email: "test@123.com"
+          email: "test@123.com",
+          role_id: "2",
+          team: "[1, 2, 3]"
         }
        end,
       Error: swagger_schema do
@@ -189,6 +203,19 @@ defmodule GothamWeb.UserController do
     response 201, "Ok", Schema.ref(:Users)
     response 422, "Unprocessable Entity", Schema.ref(:Error)
   end
+
+  swagger_path :add_in_team do
+    post "/add"
+    summary "Add a user to a manager's team"
+    description "Add a user to a manager's team"
+    parameters do
+      id :path, :integer, "Users id", required: true
+    end
+    response 201, "Ok", Schema.ref(:Users)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+
 
   swagger_path :delete do
     delete "/:id"

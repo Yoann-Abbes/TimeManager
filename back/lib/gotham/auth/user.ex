@@ -9,17 +9,18 @@ defmodule Gotham.Auth.User do
     field :lastname, :string
     field :firstname, :string
     field :password, :string
-    field :roleId, :id, default: 1
-    field :token, :string
+    field :role_id, :id, default: 1
+    field :team, {:array, :integer}
 
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :username, :lastname, :firstname, :password, :roleId])
-    |> validate_required([:email, :username, :lastname, :firstname, :password, :roleId])
+    |> cast(attrs, [:email, :username, :lastname, :firstname, :password, :role_id])
+    |> validate_required([:email, :username, :lastname, :firstname, :password, :role_id])
     |> unique_constraint(:email)
     |> unique_constraint(:username)
+    #|> unique_constraint(:role_id)
   end
 end

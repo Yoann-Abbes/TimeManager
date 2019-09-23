@@ -109,10 +109,16 @@ defmodule Gotham.Auth do
 
   """
   def update_user(%User{} = user, attrs) do
-    IO.inspect attrs
     user
     |> User.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_team(%User{} = user, attrs) do
+    IO.inspect attrs
+    id = user.id
+    from(u in User, where: u.id == ^id) |>
+    Repo.update_all(push: [team: attrs])
   end
 
   @doc """
