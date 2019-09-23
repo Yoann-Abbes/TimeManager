@@ -22,6 +22,10 @@ Vue.use(MdContent)
 Vue.use(MdTabs)
 Vue.use(moment);
 
+if(localStorage.getItem('user')){
+    axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(localStorage.getItem('user')).jwt
+    store.dispatch('authModule/reload')
+}
 axios.interceptors.response.use((response) => {
     return response
 }, function (error) {

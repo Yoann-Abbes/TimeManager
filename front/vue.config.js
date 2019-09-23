@@ -2,7 +2,7 @@ const webpack = require('webpack')
 module.exports = {
     devServer: {
         proxy: {
-            '^/api': {
+            '^/api/*': {
                 target: "http://localhost:4000",
                 ws: true,
                 changeOrigin: true,
