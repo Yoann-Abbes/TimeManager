@@ -1,7 +1,6 @@
 <template>
   <div>
     HOME
-    <button @click.prevent="logout">logout</button>
   </div>
 </template>
 

@@ -27,11 +27,12 @@ export const authModule = {
         }
     },
     actions: {
-        login({ commit }, { email, password }) {
+        login({ commit }, { username, password }) {
             commit('loginLoading')
-            authService.login(email, password).then(
+            authService.login(username, password).then(
                 success => {
                     commit('loginSuccess', success)
+                    router.push('/')
                 },
                 error => {
                     commit('loginError')
