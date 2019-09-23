@@ -30,7 +30,8 @@ defmodule GothamWeb.UserController do
 
   def show(conn, _params) do
      user = Guardian.Plug.current_resource(conn)
-     conn |> render("user.json", user: user)
+     IO.inspect user
+     conn |> render("show.json", user: user)
   end
 
   def show_params(conn, %{}) do
@@ -90,7 +91,6 @@ defmodule GothamWeb.UserController do
   def sign_out(conn, %{"user" => user_params}) do
     
     token = Enum.at(get_req_header(conn, "x-xsrf-token"), 0)
-    IO.inspect token
     {:ok, claims} = Gotham.Guardian.revoke(token)
       send_resp(conn, :no_content, "")
   end

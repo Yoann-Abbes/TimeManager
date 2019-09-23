@@ -22,10 +22,7 @@ defmodule Gotham.Auth do
   end
 
   defp email_password_auth(username, password) when is_binary(username) and is_binary(password) do
-  IO.puts password
   user = get_by_username(username)
-  IO.inspect user
-    #with {:ok, user} <- get_by_username(username),
   verify_password(password, user)
   end
 
