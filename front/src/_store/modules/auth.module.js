@@ -21,9 +21,9 @@ export const authModule = {
             state.status = 'success'
             state.token = payload.data.jwt
         },
-        logout(state) {
-            state.status = ''
-            state.token = ''
+        reload(state, token){
+            state.status = 'success'
+            state.token = token
         }
     },
     actions: {
@@ -40,12 +40,14 @@ export const authModule = {
             )
         },
         logout({ commit }) {
-            commit('logout')
             authService.logout().then(
                 success => {
                     location.reload()
                 }
             )
+        },
+        reload({commit}) {
+            commit('reload', JSON.parse(localStorage.getItem('user')).jwt)
         }
     }
 }

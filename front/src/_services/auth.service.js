@@ -14,9 +14,8 @@ function login(username, password) {
                 }
             })
             .then(success => {
-                console.log(success.data.jwt)
                 localStorage.setItem('user', JSON.stringify(success.data))
-                axios.defaults.headers.common['Authorization'] = success.data.jwt;
+                axios.defaults.headers.common['Authorization'] = 'Bearer '+ success.data.jwt;
                 resolve(success)
             })
             .catch(error => {
@@ -27,9 +26,11 @@ function login(username, password) {
 
 function logout() {
     return new Promise((resolve, reject) => {
+        const regex = /Bearer /gi
+        console.log(axios.defaults.headers.common['Authorization'].replace(regex, ''))
         axios.delete(process.env.VUE_APP_API_URL + '/api/users/sign_out',{
             headers:{
-                "x-xsrf-token": axios.defaults.headers.common['Authorization']
+                "x-xsrf-token": axios.defaults.headers.common['Authorization'].replace(regex, '')
             }
         }).then(
             success => {
