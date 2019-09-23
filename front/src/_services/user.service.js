@@ -7,7 +7,7 @@ export const userService = {
     deleteUser
 }
 
-function createUser(username, email, firstname, lastname, password, role) { //changer params
+function createUser(username, email, firstname, lastname, password) {
     return new Promise((resolve, reject) => {
         axios.post(process.env.VUE_APP_API_URL + '/api/users/sign_up', {
                 user: {
@@ -15,8 +15,7 @@ function createUser(username, email, firstname, lastname, password, role) { //ch
                     email: email,
                     firstname: firstname,
                     lastname: lastname,
-                    password: password,
-                    role: role
+                    password: password
                 }
             })
             .then(success => {
@@ -28,12 +27,16 @@ function createUser(username, email, firstname, lastname, password, role) { //ch
     })
 }
 
-function updateUser(id, username, email) {
+function updateUser(id, username, email, firstname, lastname, password, roleId) {
     return new Promise((resolve, reject) => {
         axios.put(process.env.VUE_APP_API_URL + '/api/users/' + id, {
                 user: {
                     username: username,
-                    email: email
+                    email: email,
+                    firstname: firstname,
+                    lastname: lastname,
+                    password: password,
+                    roleId: roleId
                 }
             })
             .then(success => {
