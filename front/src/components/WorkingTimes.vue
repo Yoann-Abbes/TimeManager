@@ -6,7 +6,7 @@
                     <md-icon>post_add</md-icon>
                 </router-link>
             </h1>
-            <md-table style="width:700px">
+            <md-table>
                 <md-table-row>
                     <md-table-head md-numeric>ID</md-table-head>
                     <md-table-head>Start</md-table-head>

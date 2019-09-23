@@ -1,4 +1,4 @@
-# Integration tests
+ # Integration tests
 _integration-tests: &integration-tests
   os: linux
   sudo: required

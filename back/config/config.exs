@@ -5,9 +5,25 @@
 # is restricted to this project.
 use Mix.Config
 
+config :gotham, Gotham.Guardian,
+       issuer: "gotham",
+       secret_key: "h7/7Je1YdDnD8AHqRsa9j/xbHwoam3zXv8Am/A2G0hRBwLqmITkdft1jhA/rFD1+"
+
 # General application configuration
 config :gotham,
   ecto_repos: [Gotham.Repo]
+
+config :gotham, Gotham.Web.Endpoint,
+  url: [host: "localhost"] # "host": "localhost:4000" in generated swagger
+
+config :gotham, :phoenix_swagger,
+  swagger_files: %{
+    "priv/static/swagger.json" => [
+      router: GothamWeb.Router#,     # phoenix routes will be converted to swagger paths
+      #endpoint: GothamWeb.Endpoint  # (optional) endpoint config used to set host, port and https schemes.
+    ]
+  }
+
 
 # Configures the endpoint
 config :gotham, GothamWeb.Endpoint,

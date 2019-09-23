@@ -1,23 +1,24 @@
-import {userService} from '../../_services/user.service'
+import { userService } from '../../_services/user.service'
 
 export const userModule = {
     namespaced: true,
-    state:{
-        logged:{
+    state: {
+        logged: {
             status: '',
             id: '',
             username: '',
             email: '',
-            role: '',
-            skill: ''
+            firstname: '',
+            lastname: '',
+            role: ''
         },
-        create:{
+        create: {
             status: ''
         },
-        update:{
+        update: {
             status: ''
         },
-        delete:{
+        delete: {
             status: ''
         },
         get: {
@@ -25,6 +26,8 @@ export const userModule = {
             id: '',
             username: '',
             email: '',
+            firstname: '',
+            lastname: '',
             role: '',
             skill: ''
         },
@@ -42,60 +45,60 @@ export const userModule = {
         getAllUsers: state => state.userList
     },
     mutations: {
-        createLoading(state){
+        createLoading(state) {
             state.create.status = 'loading'
         },
-        createError(state){
+        createError(state) {
             state.create.status = 'error'
         },
-        createSuccess(state){
+        createSuccess(state) {
             state.create.status = 'success'
         },
-        updateLoading(state){
+        updateLoading(state) {
             state.update.status = 'loading'
         },
-        updateError(state){
+        updateError(state) {
             state.update.status = 'error'
         },
-        updateSuccess(state){
+        updateSuccess(state) {
             state.update.status = 'success'
         },
-        deleteLoading(state){
+        deleteLoading(state) {
             state.delete.status = 'loading'
         },
-        deleteError(state){
+        deleteError(state) {
             state.delete.status = 'error'
         },
-        deleteSuccess(state){
+        deleteSuccess(state) {
             state.delete.status = 'success'
         },
-        getLoading(state){
+        getLoading(state) {
             state.user.status = 'loading'
         },
-        getError(state){
+        getError(state) {
             state.user.status = 'error'
         },
-        getSuccess(state, payload){
+        getSuccess(state, payload) {
             state.user.status = 'success'
             state.user.username = payload.data.data.username
             state.user.email = payload.data.data.email
             state.user.role = payload.data.data.role
         },
-        getAllLoading(state){
+        getAllLoading(state) {
             state.userList.status = 'loading'
         },
-        getAllError(state){
+        getAllError(state) {
             state.userList.status = 'error'
         },
-        getallSuccess(state, payload){
+        getallSuccess(state, payload) {
             state.userList.status = 'success'
             state.userList.data = payload.data.data
         }
     },
     actions: {
-        createUser({commit}, {username, email, firstname, lastname, password, role}){
+        createUser({ commit }, { username, email, firstname, lastname, password }) {
             commit('createLoading')
-            userService.createUser(username, email, firstname, lastname, password, role).then(
+            userService.createUser(username, email, firstname, lastname, password).then(
                 success => {
                     commit('createSuccess')
                 },
@@ -104,7 +107,7 @@ export const userModule = {
                 }
             )
         },
-        updateUser({commit}, {id, username, email, firstname, lastname, password, role}){
+        updateUser({ commit }, { id, username, email, firstname, lastname, password, role }) {
             commit('updateLoading')
             userService.updateUser(id, username, email, firstname, lastname, password, role).then(
                 success => {
@@ -115,7 +118,7 @@ export const userModule = {
                 }
             )
         },
-        deleteUser({commit}, {id}){
+        deleteUser({ commit }, { id }) {
             commit('deleteLoading')
             userService.deleteUser(id).then(
                 success => {
@@ -126,7 +129,7 @@ export const userModule = {
                 }
             )
         },
-        getUser({commit}, {id}){
+        getUser({ commit }, { id }) {
             commit('getLoading')
             userService.getUser(id).then(
                 success => {
@@ -137,7 +140,7 @@ export const userModule = {
                 }
             )
         },
-        getAllUser({commit}, {role}){
+        getAllUser({ commit }, { role }) {
             commit('getAllLoading')
             userService.getAllUsers(role).then(
                 success => {

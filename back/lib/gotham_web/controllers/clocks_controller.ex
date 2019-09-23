@@ -1,10 +1,12 @@
 defmodule GothamWeb.ClocksController do
   use GothamWeb, :controller
+  use PhoenixSwagger
 
   alias Gotham.Time
   alias Gotham.Time.Clocks
   alias Gotham.Work
   alias Gotham.Work.WorkingTime
+  
 
   alias Gotham.Auth
 

@@ -1,5 +1,6 @@
 defmodule GothamWeb.WorkingTimeController do
   use GothamWeb, :controller
+  use PhoenixSwagger
 
   alias Gotham.Work
   alias Gotham.Work.WorkingTime
@@ -63,4 +64,26 @@ defmodule GothamWeb.WorkingTimeController do
       send_resp(conn, :no_content, "")
     end
   end
+
+
+def swagger_definitions do
+  %{
+    workingtime: swagger_schema do
+      title "workingtime"
+      description "A user workingtime"
+      properties do
+        start :datetime, "Users start working", required: true
+        eend :datetime, "Users end working", required: true
+        user_id :integer, "Users id", required: true
+      end
+      example %{
+        start: "2019-12-12 09:00:00",
+        end: "2019-12-12 18:00:00",
+        user_id: 42
+      }
+    end
+  }
+end
+
+
 end

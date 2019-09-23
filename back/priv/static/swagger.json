@@ -1,0 +1,99 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/api/users/:id": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "type": "integer",
+            "required": false,
+            "name": "page[size]",
+            "minimum": 1,
+            "in": "query",
+            "description": "Number of elements per page"
+          },
+          {
+            "type": "integer",
+            "required": false,
+            "name": "page[number]",
+            "minimum": 1,
+            "in": "query",
+            "description": "Number of the page"
+          }
+        ],
+        "operationId": "GothamWeb.UserController.show",
+        "description": ""
+      }
+    }
+  },
+  "info": {
+    "version": "1.0",
+    "title": "Gotham"
+  },
+  "definitions": {
+    "workingtime": {
+      "type": "object",
+      "title": "workingtime",
+      "required": [
+        "user_id",
+        "eend",
+        "start"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "description": "Users id"
+        },
+        "start": {
+          "type": "datetime",
+          "description": "Users start working"
+        },
+        "eend": {
+          "type": "datetime",
+          "description": "Users end working"
+        }
+      },
+      "example": {
+        "user_id": 42,
+        "start": "2019-12-12 09:00:00",
+        "end": "2019-12-12 18:00:00"
+      },
+      "description": "A user workingtime"
+    },
+    "users": {
+      "type": "object",
+      "title": "users",
+      "required": [
+        "email",
+        "username"
+      ],
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Users name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Users email"
+        }
+      },
+      "example": {
+        "username": "test",
+        "email": "test@123.com"
+      },
+      "description": "A user of the application"
+    }
+  }
+}

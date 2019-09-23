@@ -1,8 +1,9 @@
 import { authService } from '../../_services/auth.service'
+import router from '../../_helpers/router'
 
 export const authModule = {
     namespaced: true,
-    state:{
+    state: {
         status: '',
         token: ''
     },
@@ -10,23 +11,23 @@ export const authModule = {
         getStatus: state => state.status
     },
     mutations: {
-        loginLoading(state){
+        loginLoading(state) {
             state.status = 'loading'
         },
-        loginError(state){
+        loginError(state) {
             state.status = 'error'
         },
-        loginSuccess(state, payload){
+        loginSuccess(state, payload) {
             state.status = 'success'
-            state.token = payload.token
+            state.token = payload.data.jwt
         },
-        logout(state){
+        logout(state) {
             state.status = ''
             state.token = ''
         }
     },
-    actions:{
-        login({commit}, {email, password}){
+    actions: {
+        login({ commit }, { email, password }) {
             commit('loginLoading')
             authService.login(email, password).then(
                 success => {
@@ -37,9 +38,13 @@ export const authModule = {
                 }
             )
         },
-        logout({commit}){
+        logout({ commit }) {
             commit('logout')
-            authService.logout()
+            authService.logout().then(
+                success => {
+                    location.reload()
+                }
+            )
         }
     }
 }
