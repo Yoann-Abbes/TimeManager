@@ -27,7 +27,7 @@ function createUser(username, email, firstname, lastname, password) {
     })
 }
 
-function updateUser(id, username, email, firstname, lastname, password, roleId) {
+function updateUser(id, username, email, firstname, lastname, password, role_id) {
     return new Promise((resolve, reject) => {
         axios.put(process.env.VUE_APP_API_URL + '/api/users/' + id, {
                 user: {
@@ -36,7 +36,7 @@ function updateUser(id, username, email, firstname, lastname, password, roleId) 
                     firstname: firstname,
                     lastname: lastname,
                     password: password,
-                    roleId: roleId
+                    role_id: role_id
                 }
             })
             .then(success => {
