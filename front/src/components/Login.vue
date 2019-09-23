@@ -9,11 +9,11 @@
           <div
             class="error"
             v-show="getLoginStatus == 'error'"
-          >Wrong password or email, please try again</div>
+          >Wrong password or username, please try again</div>
           <form @submit.prevent="login">
             <md-field>
-              <label>E-mail</label>
-              <md-input type="email" required autofocus v-model="loginForm.email"></md-input>
+              <label>Username</label>
+              <md-input type="text" required autofocus v-model="loginForm.username"></md-input>
             </md-field>
             <md-field md-has-password>
               <label>Password</label>
@@ -31,48 +31,52 @@
 </template>
 
 <script>
-
-  export default {
-    data() {
-      return {
-        loginForm: {
-          email: "",
-          password: ""
-        }
+export default {
+  data() {
+    return {
+      loginForm: {
+        username: "",
+        password: ""
       }
-    },
-    methods: {
-      login: function() {
-        const { email, password } = this.loginForm;
-        this.$store.dispatch("authModule/login", {
-          email: email,
+    };
+  },
+  computed: {
+    getLoginStatus() {
+      return this.$store.getters["authModule/getStatus"];
+    }
+  },
+  methods: {
+    login: function() {
+      const { username, password } = this.loginForm;
+      this.$store
+        .dispatch("authModule/login", {
+          username: username,
           password: password
-        }).then(
-          success => {
-            this.$router.push('/home')
-          }
-        )
-      }
+        })
+        .then(success => {
+          this.$router.push("/home");
+        });
     }
   }
+};
 </script>
 
 <style>
-  .centered-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 100vh;
-  }
-  .title {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  .form {
-    margin-bottom: 60px;
-  }
-  .md-content {
-    padding: 40px;
-  }
+.centered-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100vh;
+}
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.form {
+  margin-bottom: 60px;
+}
+.md-content {
+  padding: 40px;
+}
 </style>
