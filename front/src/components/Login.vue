@@ -8,12 +8,12 @@
         <div class="form">
           <div
             class="error"
-            v-show="getLoginStatus == 'error'"
+            v-show="getStatus === 'error'"
           >Wrong password or email, please try again</div>
           <form @submit.prevent="login">
             <md-field>
-              <label>E-mail</label>
-              <md-input type="email" required autofocus v-model="loginForm.email"></md-input>
+              <label>Username</label>
+              <md-input type="text" required autofocus v-model="loginForm.username"></md-input>
             </md-field>
             <md-field md-has-password>
               <label>Password</label>
@@ -31,25 +31,29 @@
 </template>
 
 <script>
-
   export default {
     data() {
       return {
         loginForm: {
-          email: "",
+          username: "",
           password: ""
         }
       }
     },
+    computed: {
+      getStatus() {
+        return this.$store.getters['authModule/getStatus']
+      }
+    },
     methods: {
       login: function() {
-        const { email, password } = this.loginForm;
+        const { username, password } = this.loginForm;
         this.$store.dispatch("authModule/login", {
-          email: email,
+          username: username,
           password: password
         }).then(
           success => {
-            this.$router.push('/home')
+            this.$router.push('/')
           }
         )
       }
