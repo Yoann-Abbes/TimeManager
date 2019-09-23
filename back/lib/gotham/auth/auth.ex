@@ -4,17 +4,19 @@ defmodule Gotham.Auth do
   """
 
   import Ecto.Query, warn: false
+  
   alias Gotham.Repo
   alias Gotham.Roles
-
   alias Gotham.Auth.User
-
+  alias Gotham.Auth
   alias Gotham.Guardian
+
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
   def token_sign_in(username, password) do
     case email_password_auth(username, password) do
       {:ok, user} ->
+      IO.inspect user
         Guardian.encode_and_sign(user)
       _ ->
         {:error, :unauthorized}
@@ -22,8 +24,8 @@ defmodule Gotham.Auth do
   end
 
   defp email_password_auth(username, password) when is_binary(username) and is_binary(password) do
-  user = get_by_username(username)
-  verify_password(password, user)
+    user = get_by_username(username)
+    verify_password(password, user)
   end
 
   defp verify_password(password, %User{} = user) when is_binary(password) do

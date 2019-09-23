@@ -23,36 +23,34 @@ defmodule GothamWeb.UserController do
     end
   end
 
-  # def show(conn, %{"id" => id}) do
-  #   user = Auth.get_user!(id)
-  #   render(conn, "show.json", user: user)
-  # end
-
   def show(conn, _params) do
      user = Guardian.Plug.current_resource(conn)
-     IO.inspect user
      conn |> render("show.json", user: user)
   end
 
-  def show_params(conn, %{}) do
-    params = conn.query_params
+  # def show_params(conn, _params) do
+  #   #params = conn.query_params
 
-    if Map.has_key?(params, "email") and Map.has_key?(params, "username") do
-      user = Auth.get_user_by!(Map.get(params, "email"), Map.get(params, "username"))
-      render(conn, "show.json", user: user)
-    end
-  end
+  #   users = Auth.list_users()
+  #   render(conn, "index.json", users: users)
+
+  #   # if Map.has_key?(params, "email") and Map.has_key?(params, "username") do
+  #   #   user = Auth.get_user_by!(Map.get(params, "email"), Map.get(params, "username"))
+  #   #   conn |> render(conn, "show.json", user: user)
+  #   # end
+  # end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Auth.get_user!(id)
-
+    #user = Auth.get_user!(id)
+    user = Guardian.Plug.current_resource(conn)
     with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    user = Auth.get_user!(id)
+    #user = Auth.get_user!(id)
+    user = Guardian.Plug.current_resource(conn)
     with {:ok, %User{}} <- Auth.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
@@ -88,7 +86,7 @@ defmodule GothamWeb.UserController do
     end
   end
 
-  def sign_out(conn, %{"user" => user_params}) do
+  def sign_out(conn, _params) do
     
     token = Enum.at(get_req_header(conn, "x-xsrf-token"), 0)
     {:ok, claims} = Gotham.Guardian.revoke(token)
@@ -117,7 +115,4 @@ defmodule GothamWeb.UserController do
       paging size: "page[size]", number: "page[number]"
       response 200, "OK", Schema.ref(:Users)
     end
-
-
-
 end
