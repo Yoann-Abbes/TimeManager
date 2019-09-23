@@ -1,5 +1,5 @@
 defmodule GothamWeb.Guardian.AuthPipeline do
-  use Guardian.Plug.Pipeline, otp_app: :GothamWeb,
+  use Guardian.Plug.Pipeline, otp_app: :gotham,
   module: GothamWeb.Guardian,
   error_handler: GothamWeb.AuthErrorHandler
 
