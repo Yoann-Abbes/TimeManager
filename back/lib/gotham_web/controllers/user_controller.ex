@@ -3,6 +3,8 @@ defmodule GothamWeb.UserController do
   use PhoenixSwagger
   import Bcrypt
 
+
+  alias Gotham.{Users, Repo, ErrorView}
   alias Gotham.Guardian
   alias Gotham.Auth
   alias Gotham.Auth.User
@@ -41,16 +43,16 @@ defmodule GothamWeb.UserController do
   # end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    #user = Auth.get_user!(id)
-    user = Guardian.Plug.current_resource(conn)
+    user = Auth.get_user!(id)
+    #user = Guardian.Plug.current_resource(conn)
     with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    #user = Auth.get_user!(id)
-    user = Guardian.Plug.current_resource(conn)
+  def remove(conn, %{"id" => id}) do
+    user = Auth.get_user!(id)
+    #user = Guardian.Plug.current_resource(conn)
     with {:ok, %User{}} <- Auth.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
@@ -95,24 +97,107 @@ defmodule GothamWeb.UserController do
 
   def swagger_definitions do
     %{
-      users: swagger_schema do
-        title "users"
+      Users: swagger_schema do
+        title "Users"
         description "A user of the application"
         properties do
           username :string, "Users name", required: true
           email :string, "Users email", required: true
+          firstname :string, "Users firstname", required: true
+          lastname :string, "Users lastname", required: true
+          password :string, "Users password", required: true
         end
         example %{
           username: "test",
+          firstname: "john",
+          lastname: "doe",
+          password: "2uto3ihg]1081+_92752'",
           email: "test@123.com"
         }
+       end,
+      Error: swagger_schema do
+      title "Errors"
+      description "Error responses from the API"
+      properties do
+        error :string, "The message of the error raised", required: true
       end
+    end
     }
   end
-
-  swagger_path :show do
-      get "/api/users/:id"
-      paging size: "page[size]", number: "page[number]"
-      response 200, "OK", Schema.ref(:Users)
+  
+  swagger_path :create do
+    post "/"
+    summary "Add a new user"
+    description "Add new user"
+    parameters do
+      user :body, Schema.ref(:Users), "User data to record", required: true
     end
+    response 201, "Ok", Schema.ref(:Users)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+  
+  swagger_path :show do
+    get "/me"
+    summary "Show current users data"
+    description "Show current users data"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :sign_in do
+    post "/sign_in"
+    summary "Sign in with credentials"
+    description "Sign in with credentials"
+    parameters do
+    username :path, :string, "username", required: true
+    passowrd :path, :string, "password", required: true
+    end
+    response 201, "Ok", Schema.ref(:Users)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :sign_up do
+    post "/sign_up"
+    summary "Create a new user account"
+    description "Create a new user account"
+    parameters do
+    tracker :body, Schema.ref(:Users), "User data to record"
+    end
+    response 201, "Ok", Schema.ref(:Users)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :sign_out do
+    delete "/sign_out"
+    summary "Sign out the current user"
+    description "Sign out the current user"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+  
+  swagger_path :update do
+    patch "/:id"
+    summary "Update an existing user"
+    description "Update an existing user"
+    parameters do
+      username :path, :string, "Users name", required: false
+      email :path, :string, "Users email", required: false
+      firstname :path, :string, "Users firstname", required: false
+      lastname :path, :string, "Users lastname", required: false
+      password :path, :string, "Users password", required: false
+    end
+    response 201, "Ok", Schema.ref(:Users)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :delete do
+    delete "/:id"
+    summary "Delete a user"
+    description "Delete a user"
+    parameters do
+      id :path, :integer, "The uuid of the activity", required: true
+    end
+    response 204, "No content"
+    response 404, "Not found", Schema.ref(:Error)
+  end
 end

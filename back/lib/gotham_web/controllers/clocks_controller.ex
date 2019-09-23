@@ -64,4 +64,43 @@ defmodule GothamWeb.ClocksController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def swagger_definitions do
+  %{
+    clocks: swagger_schema do
+      title "Clocks"
+      description "A user clocks"
+      properties do
+        time :datetime, "Users start working", required: true
+        status :status, "Working or not status", required: true
+        user_id :integer, "Users id", required: true
+      end
+      example %{
+        time: "2019-12-12 09:00:00",
+        status: "true",
+        user_id: 42
+      }
+    end
+    }
+  end
+
+
+  swagger_path :create do
+    post "/"
+    summary "Clocks in or Clocks out"
+    description "Store the start when a user clock in, creates a workingtime when clock out"
+    parameters do
+      user :body, Schema.ref(:clocks), "clocks data to record", required: true
+    end
+    response 201, "Ok", Schema.ref(:clocks)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+  
+  swagger_path :show do
+    get "/:userId"
+    summary "Show current users data"
+    description "Show current users data"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
 end

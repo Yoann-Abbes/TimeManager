@@ -58,7 +58,7 @@ defmodule GothamWeb.WorkingTimeController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def remove(conn, %{"id" => id}) do
     working_time = Work.get_working_time!(id)
     with {:ok, %WorkingTime{}} <- Work.delete_working_time(working_time) do
       send_resp(conn, :no_content, "")
@@ -69,7 +69,7 @@ defmodule GothamWeb.WorkingTimeController do
 def swagger_definitions do
   %{
     workingtime: swagger_schema do
-      title "workingtime"
+      title "Workingtime"
       description "A user workingtime"
       properties do
         start :datetime, "Users start working", required: true
@@ -82,8 +82,58 @@ def swagger_definitions do
         user_id: 42
       }
     end
-  }
-end
+    }
+  end
 
 
+  swagger_path :create do
+    post "/"
+    summary "Add a new workingtime"
+    description "Add new workingtime"
+    parameters do
+      user :body, Schema.ref(:workingtime), "workingtime data to record", required: true
+    end
+    response 201, "Ok", Schema.ref(:workingtime)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+  
+  swagger_path :show_one do
+    get "/:userId/:workingtimeId"
+    summary "Show current users data"
+    description "Show current users data"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :show_params do
+    get "/:userId/:workingtimeId"
+    summary "Show current users data"
+    description "Show current users data"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+
+  swagger_path :update do
+    patch "/:userId"
+    summary "Update an existing users workingtime"
+    description "Update an existing users workingtime"
+    parameters do
+      start :path, :datetime, "Users start date", required: false
+      eend :path, :datetime, "Users end date", required: false
+    end
+    response 201, "Ok", Schema.ref(:workingtime)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :remove do
+    delete "/:userId"
+    summary "Delete a users workingtime"
+    description "Delete a users workingtime"
+    parameters do
+      id :path, :integer, "The user id", required: true
+    end
+    response 204, "No content"
+    response 404, "Not found", Schema.ref(:Error)
+  end
 end

@@ -50,7 +50,7 @@ defmodule GothamWeb.Router do
     get "/", UserController, :index
     post "/", UserController, :create
     put "/:id", UserController, :update
-    delete "/:id", UserController, :delete
+    delete "/:id", UserController, :remove
     
   end
 
@@ -63,7 +63,7 @@ defmodule GothamWeb.Router do
     get "/:id", WorkingTimeController, :show_params
     post "/:id", WorkingTimeController, :create
     put "/:id", WorkingTimeController, :update
-    delete "/:id", WorkingTimeController, :delete
+    delete "/:id", WorkingTimeController, :remove
   end
   
   scope "/api/clocks", GothamWeb do

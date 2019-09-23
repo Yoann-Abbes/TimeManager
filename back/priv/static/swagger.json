@@ -1,40 +1,329 @@
 {
   "swagger": "2.0",
   "paths": {
-    "/api/users/:id": {
+    "/sign_up": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user account",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "required": false,
+            "name": "tracker",
+            "in": "body",
+            "description": "User data to record"
+          }
+        ],
+        "operationId": "GothamWeb.UserController.sign_up",
+        "description": "Create a new user account"
+      }
+    },
+    "/sign_out": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Sign out the current user",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.UserController.sign_out",
+        "description": "Sign out the current user"
+      }
+    },
+    "/sign_in": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Sign in with credentials",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "username",
+            "in": "path",
+            "description": "username"
+          },
+          {
+            "type": "string",
+            "required": true,
+            "name": "passowrd",
+            "in": "path",
+            "description": "password"
+          }
+        ],
+        "operationId": "GothamWeb.UserController.sign_in",
+        "description": "Sign in with credentials"
+      }
+    },
+    "/me": {
       "get": {
         "tags": [
           "User"
         ],
-        "summary": "",
+        "summary": "Show current users data",
         "responses": {
-          "200": {
+          "422": {
             "schema": {
-              "$ref": "#/definitions/Users"
+              "$ref": "#/definitions/Error"
             },
-            "description": "OK"
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.UserController.show",
+        "description": "Show current users data"
+      }
+    },
+    "/:userId/:workingtimeId": {
+      "get": {
+        "tags": [
+          "WorkingTime"
+        ],
+        "summary": "Show current users data",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.WorkingTimeController.show_params",
+        "description": "Show current users data"
+      }
+    },
+    "/:userId": {
+      "patch": {
+        "tags": [
+          "WorkingTime"
+        ],
+        "summary": "Update an existing users workingtime",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/workingtime"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "datetime",
+            "required": false,
+            "name": "start",
+            "in": "path",
+            "description": "Users start date"
+          },
+          {
+            "type": "datetime",
+            "required": false,
+            "name": "eend",
+            "in": "path",
+            "description": "Users end date"
+          }
+        ],
+        "operationId": "GothamWeb.WorkingTimeController.update",
+        "description": "Update an existing users workingtime"
+      },
+      "get": {
+        "tags": [
+          "Clocks"
+        ],
+        "summary": "Show current users data",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.ClocksController.show",
+        "description": "Show current users data"
+      },
+      "delete": {
+        "tags": [
+          "WorkingTime"
+        ],
+        "summary": "Delete a users workingtime",
+        "responses": {
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Not found"
+          },
+          "204": {
+            "description": "No content"
           }
         },
         "parameters": [
           {
             "type": "integer",
-            "required": false,
-            "name": "page[size]",
-            "minimum": 1,
-            "in": "query",
-            "description": "Number of elements per page"
-          },
-          {
-            "type": "integer",
-            "required": false,
-            "name": "page[number]",
-            "minimum": 1,
-            "in": "query",
-            "description": "Number of the page"
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The user id"
           }
         ],
-        "operationId": "GothamWeb.UserController.show",
-        "description": ""
+        "operationId": "GothamWeb.WorkingTimeController.remove",
+        "description": "Delete a users workingtime"
+      }
+    },
+    "/:id": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update an existing user",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": false,
+            "name": "username",
+            "in": "path",
+            "description": "Users name"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "name": "email",
+            "in": "path",
+            "description": "Users email"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "name": "firstname",
+            "in": "path",
+            "description": "Users firstname"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "name": "lastname",
+            "in": "path",
+            "description": "Users lastname"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "name": "password",
+            "in": "path",
+            "description": "Users password"
+          }
+        ],
+        "operationId": "GothamWeb.UserController.update",
+        "description": "Update an existing user"
+      }
+    },
+    "/": {
+      "post": {
+        "tags": [
+          "Clocks"
+        ],
+        "summary": "Clocks in or Clocks out",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/clocks"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/clocks"
+            },
+            "required": true,
+            "name": "user",
+            "in": "body",
+            "description": "clocks data to record"
+          }
+        ],
+        "operationId": "GothamWeb.ClocksController.create",
+        "description": "Store the start when a user clock in, creates a workingtime when clock out"
       }
     }
   },
@@ -45,7 +334,7 @@
   "definitions": {
     "workingtime": {
       "type": "object",
-      "title": "workingtime",
+      "title": "Workingtime",
       "required": [
         "user_id",
         "eend",
@@ -72,10 +361,42 @@
       },
       "description": "A user workingtime"
     },
-    "users": {
+    "clocks": {
       "type": "object",
-      "title": "users",
+      "title": "Clocks",
       "required": [
+        "user_id",
+        "status",
+        "time"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "description": "Users id"
+        },
+        "time": {
+          "type": "datetime",
+          "description": "Users start working"
+        },
+        "status": {
+          "type": "status",
+          "description": "Working or not status"
+        }
+      },
+      "example": {
+        "user_id": 42,
+        "time": "2019-12-12 09:00:00",
+        "status": "true"
+      },
+      "description": "A user clocks"
+    },
+    "Users": {
+      "type": "object",
+      "title": "Users",
+      "required": [
+        "password",
+        "lastname",
+        "firstname",
         "email",
         "username"
       ],
@@ -84,6 +405,18 @@
           "type": "string",
           "description": "Users name"
         },
+        "password": {
+          "type": "string",
+          "description": "Users password"
+        },
+        "lastname": {
+          "type": "string",
+          "description": "Users lastname"
+        },
+        "firstname": {
+          "type": "string",
+          "description": "Users firstname"
+        },
         "email": {
           "type": "string",
           "description": "Users email"
@@ -91,9 +424,26 @@
       },
       "example": {
         "username": "test",
+        "password": "2uto3ihg]1081+_92752'",
+        "lastname": "doe",
+        "firstname": "john",
         "email": "test@123.com"
       },
       "description": "A user of the application"
+    },
+    "Error": {
+      "type": "object",
+      "title": "Errors",
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "The message of the error raised"
+        }
+      },
+      "description": "Error responses from the API"
     }
   }
 }
