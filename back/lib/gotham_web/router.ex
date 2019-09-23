@@ -2,7 +2,7 @@ defmodule GothamWeb.Router do
   use GothamWeb, :router
   use PhoenixSwagger
   import Plug.Conn
-  alias GothamWeb.Guardian
+  alias Gotham.Auth.Guardian
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -17,7 +17,7 @@ defmodule GothamWeb.Router do
   end
 
   pipeline :jwt_authenticated do
-    plug Guardian.AuthPipeline
+    plug GothamWeb.AuthPipeline
   end
 
   def swagger_info do
@@ -38,25 +38,25 @@ defmodule GothamWeb.Router do
   scope "/api/users", GothamWeb do
     pipe_through :api
 
-    get "/", UserController, :show_params
-    post "/", UserController, :create
-    put "/:id", UserController, :update
-    delete "/:id", UserController, :delete
     post "/sign_in", UserController, :sign_in
     post "/sign_up", UserController, :sign_up
-    post "/sign_out", UserController, :sign_out
-
+    delete "/sign_out", UserController, :sign_out
   end
 
-  scope "/api/users", MyApiWeb do
+  scope "/api/users", GothamWeb do
     pipe_through [:api, :jwt_authenticated]
 
     get "/me", UserController, :show
+    get "/", UserController, :index
+    post "/", UserController, :create
+    put "/:id", UserController, :update
+    delete "/:id", UserController, :delete
+    
   end
 
 
   scope "/api/workingtimes", GothamWeb do
-    pipe_through :api
+    pipe_through [:api, :jwt_authenticated]
     
     get "/", WorkingTimeController, :index
     get "/:userID/:workingtimeID", WorkingTimeController, :show_one
@@ -67,7 +67,7 @@ defmodule GothamWeb.Router do
   end
   
   scope "/api/clocks", GothamWeb do
-    pipe_through :api
+    pipe_through [:api, :jwt_authenticated]
     
     get "/", ClocksController, :index
     get "/:id", ClocksController, :show
