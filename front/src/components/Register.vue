@@ -7,11 +7,9 @@
         </div>
 
         <div class="form">
-          <div
-                  class="error"
-                  v-show="getRegisterStatus == 'error'"
+          <div class="error" v-show="getRegisterStatus == 'error'"
           >Error during your account creation, please try again</div>
-          <form @submit.prevent="register">
+          <form id="formRegister" @submit.prevent="register">
             <md-field>
               <label>Username</label>
               <md-input required v-model="registerForm.username"></md-input>
@@ -37,7 +35,7 @@
               <md-radio v-model="registerForm.role" value="2">Manager</md-radio>
             </div>
             <div class="actions md-layout md-alignment-center-space-between">
-              <md-button class="md-raised md-primary" type="submit">Add</md-button>
+              <md-button class="md-raised md-primary" type="submit">Create</md-button>
             </div>
           </form>
         </div>
@@ -49,7 +47,6 @@
 
 <script>
   import store from "../_store/index.js"
-  import router from "../_helpers/router"
 
   export default {
     store: store,
@@ -93,7 +90,7 @@
           role: role
         }).then(
                 success => {
-                  this.registerForm = {
+                  this.registerForm= {
                     email: "",
                     username: "",
                     password: "",
@@ -101,6 +98,7 @@
                     firstname: "",
                     role: "1"
                   }
+                  document.getElementById('formRegister').reset()
                 }
         )
       }
