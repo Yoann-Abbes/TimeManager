@@ -27,10 +27,10 @@ function login(username, password) {
 function logout() {
     return new Promise((resolve, reject) => {
         const regex = /Bearer /gi
-        console.log(axios.defaults.headers.common['Authorization'].replace(regex, ''))
+        let auth = axios.defaults.headers.common['Authorization']
         axios.delete(process.env.VUE_APP_API_URL + '/api/users/sign_out',{
             headers:{
-                "x-xsrf-token": axios.defaults.headers.common['Authorization'].replace(regex, '')
+                "x-xsrf-token": auth.replace(regex, '')
             }
         }).then(
             success => {

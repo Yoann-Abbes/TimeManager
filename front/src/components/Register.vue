@@ -3,13 +3,13 @@
     <div class="centered-container">
       <md-content class="md-elevation-3">
         <div class="title">
-          <div class="md-title">Register</div>
+          <div class="md-title">Add person</div>
         </div>
 
         <div class="form">
           <div
-            class="error"
-            v-show="getRegisterStatus == 'error'"
+                  class="error"
+                  v-show="getRegisterStatus == 'error'"
           >Error during your account creation, please try again</div>
           <form @submit.prevent="register">
             <md-field>
@@ -32,8 +32,12 @@
               <label>Password</label>
               <md-input required v-model="registerForm.password" type="password" md-toggle-password></md-input>
             </md-field>
+            <div v-show="getLoggedUser.role === 3">
+              <md-radio v-model="registerForm.role" value="1">Employee</md-radio>
+              <md-radio v-model="registerForm.role" value="2">Manager</md-radio>
+            </div>
             <div class="actions md-layout md-alignment-center-space-between">
-              <md-button class="md-raised md-primary" type="submit">Register</md-button>
+              <md-button class="md-raised md-primary" type="submit">Add</md-button>
             </div>
           </form>
         </div>
@@ -44,67 +48,85 @@
 </template>
 
 <script>
-import store from "../_store/index.js";
+  import store from "../_store/index.js"
+  import router from "../_helpers/router"
 
-export default {
-  store: store,
-  data() {
-    return {
-      registerForm: {
-        email: "",
-        username: "",
-        password: "",
-        lastname: "",
-        firstname: ""
+  export default {
+    store: store,
+    data() {
+      return {
+        registerForm: {
+          email: "",
+          username: "",
+          password: "",
+          lastname: "",
+          firstname: "",
+          role: "1"
+        }
+      };
+    },
+    computed: {
+      getRegisterStatus() {
+        return this.$store.getters["userModule/getCreateStatus"]
+      },
+      getLoggedUser(){
+        return this.$store.getters['userModule/getLoggedUser']
       }
-    };
-  },
-  computed: {
-    getRegisterStatus() {
-      return this.$store.getters["userModule/getCreateStatus"];
-    }
-  },
-  methods: {
-    register: function() {
-      const {
-        email,
-        username,
-        password,
-        lastname,
-        firstname
-      } = this.registerForm;
+    },
+    methods: {
+      register: function() {
+        const {
+          email,
+          username,
+          password,
+          lastname,
+          firstname,
+          role
+        } = this.registerForm;
 
-      this.$store.dispatch("userModule/createUser", {
-        username: username,
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        password: password
-      })
+        this.$store.dispatch("userModule/createUser", {
+          username: username,
+          email: email,
+          firstname: firstname,
+          lastname: lastname,
+          password: password,
+          role: role
+        }).then(
+                success => {
+                  this.registerForm = {
+                    email: "",
+                    username: "",
+                    password: "",
+                    lastname: "",
+                    firstname: "",
+                    role: "1"
+                  }
+                }
+        )
+      }
     }
   }
-}
 </script>
 
 <style>
-.centered-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  height: 100vh;
-}
-.title {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.form {
-  margin-bottom: 60px;
-}
-.md-content {
-  padding: 40px;
-}
-.error {
-  color: red;
-}
+  .centered-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100vh;
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .form {
+    margin-bottom: 60px;
+  }
+  .md-content {
+    padding: 40px;
+  }
+  .error {
+    color: red;
+  }
 </style>

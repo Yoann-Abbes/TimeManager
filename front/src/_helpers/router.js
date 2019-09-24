@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "../components/Home";
+import store from '../_store'
+import Dashboard from "../components/Dashboard";
 import Register from "../components/Register";
 import Login from "../components/Login";
 
@@ -18,17 +19,17 @@ const router = new Router({
         {
             path: '/register',
             name: 'register',
-            component: Register
+            component: Register,
         },
         {
             path: '/',
-            alias: '/home',
-            name: 'home',
-            component: Home
+            alias: '/dashboard',
+            name: 'dashboard',
+            component: Dashboard
         },
         {
             path: '/*',
-            redirect: { name: 'home' }
+            redirect: { name: 'dashboard' }
         }
     ]
 })
@@ -42,8 +43,6 @@ router.beforeEach((to, from, next) => {
     if (authRequired && !loggedIn) {
         return next('/login');
     }
-
-
     next();
 })
 export default router;
