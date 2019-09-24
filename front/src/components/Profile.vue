@@ -20,6 +20,7 @@
         </md-list>
         <div>
             <md-button class="md-raised md-primary" @click.prevent="openEditDialog()">Edit</md-button>
+            <md-button class="md-raised md-accent" @click.prevent="deletion.showDeleteDialog = true">Delete Account</md-button>
         </div>
         <div>
             <md-dialog :md-active.sync="edit.showEditDialog" style="padding:10px">
@@ -46,6 +47,16 @@
                 </md-dialog-actions>
             </md-dialog>
         </div>
+        <div>
+            <md-dialog :md-active.sync="deletion.showDeleteDialog" style="padding:10px">
+                <md-dialog-title>Edit profile</md-dialog-title>
+                <span> Are you sure to delete your account ? </span>
+                <md-dialog-actions>
+                    <md-button class="md-accent" @click="deletion.showDeleteDialog = false">Close</md-button>
+                    <md-button class="md-primary" @click="confirmDeleteDialog()">Confirm deletion</md-button>
+                </md-dialog-actions>
+            </md-dialog>
+        </div>
 
     </div>
 </template>
@@ -61,6 +72,9 @@
                     firstname: '',
                     lastname: '',
                     email: ''
+                },
+                deletion: {
+                  showDeleteDialog: false
                 },
                 role: [
                     [],
@@ -95,8 +109,15 @@
                         this.edit.showEditDialog = false
                     }
                 )
+            },
+            confirmDeleteDialog(){
+                const id = this.$store.getters['userModule/getLoggedUser'].id
+                this.$store.dispatch('userModule/deleteUser', {id}).then(
+                    success => {
+                        this.$store.dispatch('authModule/logout')
+                    }
+                )
             }
-
         }
     }
 </script>
