@@ -4,10 +4,11 @@ export const userService = {
     createUser,
     updateUser,
     getUser,
-    deleteUser
+    deleteUser,
+    getLoggedUser
 }
 
-function createUser(username, email, firstname, lastname, password) {
+function createUser(username, email, firstname, lastname, password, role) {
     return new Promise((resolve, reject) => {
         axios.post(process.env.VUE_APP_API_URL + '/api/users/sign_up', {
                 user: {
@@ -15,7 +16,8 @@ function createUser(username, email, firstname, lastname, password) {
                     email: email,
                     firstname: firstname,
                     lastname: lastname,
-                    password: password
+                    password: password,
+                    role_id: role
                 }
             })
             .then(success => {
@@ -27,17 +29,16 @@ function createUser(username, email, firstname, lastname, password) {
     })
 }
 
-function updateUser(id, username, email, firstname, lastname, password, role_id) {
+function updateUser(id, username, email, firstname, lastname) {
     return new Promise((resolve, reject) => {
         axios.put(process.env.VUE_APP_API_URL + '/api/users/' + id, {
-                user: {
-                    username: username,
-                    email: email,
-                    firstname: firstname,
-                    lastname: lastname,
-                    password: password,
-                    role_id: role_id
-                }
+            user:{
+                username: username,
+                email: email,
+                firstname: firstname,
+                lastname: lastname
+
+            }
             })
             .then(success => {
                 resolve(success)
@@ -63,6 +64,18 @@ function getUser(id) {
 function deleteUser(id) {
     return new Promise((resolve, reject) => {
         axios.delete(process.env.VUE_APP_API_URL + '/api/users/' + id)
+            .then(success => {
+                resolve(success)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+function getLoggedUser(){
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.VUE_APP_API_URL + '/api/users/me')
             .then(success => {
                 resolve(success)
             })

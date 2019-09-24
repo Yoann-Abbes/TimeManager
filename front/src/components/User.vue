@@ -193,7 +193,7 @@ export default {
       );
     },
     getUser: function() {
-      if (this.$route.name !== "home") {
+      if (this.$route.name !== "dashboard") {
         this.$router.push("/");
       }
       userService.getUser(this.$root.user.id).then(

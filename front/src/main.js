@@ -25,6 +25,7 @@ Vue.use(moment);
 if(localStorage.getItem('user')){
     axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(localStorage.getItem('user')).jwt
     store.dispatch('authModule/reload')
+    store.dispatch('userModule/getLoggedUser')
 }
 axios.interceptors.response.use((response) => {
     return response

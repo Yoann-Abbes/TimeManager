@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "../components/Home";
+import Dashboard from "../components/Dashboard";
 import Register from "../components/Register";
 import Login from "../components/Login";
+import Profile from "../components/Profile"
 
 Vue.use(Router)
 
@@ -11,6 +12,11 @@ const router = new Router({
     base: process.env.BASE_URL,
     routes: [
         {
+            path: '/profile',
+            name: 'profile',
+            component: Profile
+        },
+        {
             path: '/login',
             name: 'login',
             component: Login
@@ -18,17 +24,17 @@ const router = new Router({
         {
             path: '/register',
             name: 'register',
-            component: Register
+            component: Register,
         },
         {
             path: '/',
-            alias: '/home',
-            name: 'home',
-            component: Home
+            alias: '/dashboard',
+            name: 'dashboard',
+            component: Dashboard
         },
         {
             path: '/*',
-            redirect: { name: 'home' }
+            redirect: { name: 'dashboard' }
         }
     ]
 })
@@ -43,7 +49,9 @@ router.beforeEach((to, from, next) => {
         return next('/login');
     }
 
-
+    if(to.path === '/login' && loggedIn){
+        return next('/')
+    }
     next();
 })
 export default router;

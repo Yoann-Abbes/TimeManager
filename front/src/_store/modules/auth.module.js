@@ -1,5 +1,6 @@
 import { authService } from '../../_services/auth.service'
 import router from '../../_helpers/router'
+import store from "../index";
 
 export const authModule = {
     namespaced: true,
@@ -32,6 +33,7 @@ export const authModule = {
             authService.login(username, password).then(
                 success => {
                     commit('loginSuccess', success)
+                    store.dispatch('userModule/getLoggedUser')
                     router.push('/')
                 },
                 error => {
