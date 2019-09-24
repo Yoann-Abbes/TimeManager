@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../_store'
 import Dashboard from "../components/Dashboard";
 import Register from "../components/Register";
 import Login from "../components/Login";
+import Profile from "../components/Profile"
 
 Vue.use(Router)
 
@@ -11,6 +11,11 @@ const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
+        {
+            path: '/profile',
+            name: 'profile',
+            component: Profile
+        },
         {
             path: '/login',
             name: 'login',
@@ -42,6 +47,10 @@ router.beforeEach((to, from, next) => {
 
     if (authRequired && !loggedIn) {
         return next('/login');
+    }
+
+    if(to.path === '/login' && loggedIn){
+        return next('/')
     }
     next();
 })

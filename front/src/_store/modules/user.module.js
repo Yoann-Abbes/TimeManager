@@ -61,8 +61,15 @@ export const userModule = {
         updateError(state) {
             state.update.status = 'error'
         },
-        updateSuccess(state) {
+        updateSuccess(state, payload) {
             state.update.status = 'success'
+            state.logged.id = payload.data.data.id
+            state.logged.username = payload.data.data.username
+            state.logged.firstname = payload.data.data.firstname
+            state.logged.lastname = payload.data.data.lastname
+            state.logged.email = payload.data.data.email
+            state.logged.role = payload.data.data.role_id
+            state.logged.team = payload.data.data.team
         },
         deleteLoading(state) {
             state.delete.status = 'loading'
@@ -128,11 +135,11 @@ export const userModule = {
                 }
             )
         },
-        updateUser({ commit }, { id, username, email, firstname, lastname, password, role }) {
+        updateUser({ commit }, { id, username, email, firstname, lastname}) {
             commit('updateLoading')
-            userService.updateUser(id, username, email, firstname, lastname, password, role).then(
+            userService.updateUser(id, username, email, firstname, lastname).then(
                 success => {
-                    commit('updateSuccess')
+                    commit('updateSuccess', success)
                 },
                 error => {
                     commit('updateError')
