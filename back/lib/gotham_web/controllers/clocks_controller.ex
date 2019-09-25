@@ -35,7 +35,8 @@ defmodule GothamWeb.ClocksController do
         p = NaiveDateTime.to_string(NaiveDateTime.truncate(Enum.at(time_clock, 0), :second))
         Work.create_working_time(user, %{"end" => time, "start" => p})
         Time.update_clocks(Enum.at(clocks, 0), %{"status" => "false", "time" => time})
-        render(conn, "index.json", clocks: clocks)
+        clocks = Time.get_clocks!(id)
+        render(conn, "show.json", clocks: clocks)
       end
     end
   end

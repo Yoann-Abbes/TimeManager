@@ -11,7 +11,7 @@ defmodule Gotham.Auth.User do
     field :password, :string
     field :role_id, :id, default: 1
     field :team, {:array, :integer}
-
+    timestamps()
   end
 
   @doc false
