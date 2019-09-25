@@ -10,7 +10,8 @@ export const userModule = {
             email: '',
             firstname: '',
             lastname: '',
-            role: ''
+            role: '',
+            team: ''
         },
         create: {
             status: ''
@@ -29,7 +30,7 @@ export const userModule = {
             firstname: '',
             lastname: '',
             role: '',
-            skill: ''
+            team: ''
         },
         userList: {
             status: '',
@@ -60,8 +61,15 @@ export const userModule = {
         updateError(state) {
             state.update.status = 'error'
         },
-        updateSuccess(state) {
+        updateSuccess(state, payload) {
             state.update.status = 'success'
+            state.logged.id = payload.data.data.id
+            state.logged.username = payload.data.data.username
+            state.logged.firstname = payload.data.data.firstname
+            state.logged.lastname = payload.data.data.lastname
+            state.logged.email = payload.data.data.email
+            state.logged.role = payload.data.data.role_id
+            state.logged.team = payload.data.data.team
         },
         deleteLoading(state) {
             state.delete.status = 'loading'
@@ -79,10 +87,14 @@ export const userModule = {
             state.user.status = 'error'
         },
         getSuccess(state, payload) {
-            state.user.status = 'success'
-            state.user.username = payload.data.data.username
-            state.user.email = payload.data.data.email
-            state.user.role = payload.data.data.role
+            state.get.status = 'success'
+            state.get.id = payload.data.data.id
+            state.get.username = payload.data.data.username
+            state.get.firstname = payload.data.data.firstname
+            state.get.lastname = payload.data.data.lastname
+            state.get.email = payload.data.data.email
+            state.get.role = payload.data.data.role_id
+            state.get.team = payload.data.data.team
         },
         getAllLoading(state) {
             state.userList.status = 'loading'
@@ -93,12 +105,28 @@ export const userModule = {
         getallSuccess(state, payload) {
             state.userList.status = 'success'
             state.userList.data = payload.data.data
+        },
+        getLoggedLoading(state) {
+            state.logged.status = 'loading'
+        },
+        getLoggedError(state) {
+            state.logged.status = 'error'
+        },
+        getLoggedSuccess(state, payload) {
+            state.logged.status = 'success'
+            state.logged.id = payload.data.data.id
+            state.logged.username = payload.data.data.username
+            state.logged.firstname = payload.data.data.firstname
+            state.logged.lastname = payload.data.data.lastname
+            state.logged.email = payload.data.data.email
+            state.logged.role = payload.data.data.role_id
+            state.logged.team = payload.data.data.team
         }
     },
     actions: {
-        createUser({ commit }, { username, email, firstname, lastname, password }) {
+        createUser({ commit }, { username, email, firstname, lastname, password, role}) {
             commit('createLoading')
-            userService.createUser(username, email, firstname, lastname, password).then(
+            userService.createUser(username, email, firstname, lastname, password, role).then(
                 success => {
                     commit('createSuccess')
                 },
@@ -107,11 +135,11 @@ export const userModule = {
                 }
             )
         },
-        updateUser({ commit }, { id, username, email, firstname, lastname, password, role }) {
+        updateUser({ commit }, { id, username, email, firstname, lastname}) {
             commit('updateLoading')
-            userService.updateUser(id, username, email, firstname, lastname, password, role).then(
+            userService.updateUser(id, username, email, firstname, lastname).then(
                 success => {
-                    commit('updateSuccess')
+                    commit('updateSuccess', success)
                 },
                 error => {
                     commit('updateError')
@@ -137,6 +165,17 @@ export const userModule = {
                 },
                 error => {
                     commit('getError')
+                }
+            )
+        },
+        getLoggedUser({commit}){
+            commit('getLoggedLoading')
+            userService.getLoggedUser().then(
+                success => {
+                    commit('getLoggedSuccess', success)
+                },
+                error => {
+                    commit('getLoggedError')
                 }
             )
         },

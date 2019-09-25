@@ -54,7 +54,7 @@ export default {
           password: password
         })
         .then(success => {
-          this.$router.push("/home");
+          this.$router.push("/dashboard");
         });
     }
   }
