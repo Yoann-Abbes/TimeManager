@@ -168,9 +168,9 @@ export const userModule = {
                 }
             )
         },
-        getLoggedUser({commit}){
+        async getLoggedUser({commit}){
             commit('getLoggedLoading')
-            userService.getLoggedUser().then(
+            await userService.getLoggedUser().then(
                 success => {
                     commit('getLoggedSuccess', success)
                 },

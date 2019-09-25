@@ -35,7 +35,7 @@ axios.interceptors.response.use((response) => {
     if (error.response.status === 401){
         store.dispatch('authModule/logout')
     }
-    return Promise.reject(error.response)
+    return Promise.reject(error)
 })
 
 new Vue({
