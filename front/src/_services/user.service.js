@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 export const userService = {
     createUser,
@@ -21,9 +22,11 @@ function createUser(username, email, firstname, lastname, password, role) {
                 }
             })
             .then(success => {
+                Vue.toasted.show('Created with success !', { position: 'bottom-right', type: 'success', theme:'outline', icon: 'sentiment_very_satisfied',  duration : 5000})
                 resolve(success)
             })
             .catch(error => {
+                Vue.toasted.show('An error occured while creating', { position: 'bottom-right', type: 'error', theme:'outline', icon: 'sentiment_dissatisfied',  duration : 5000})
                 reject(error)
             })
     })
@@ -41,9 +44,11 @@ function updateUser(id, username, email, firstname, lastname) {
             }
             })
             .then(success => {
+                Vue.toasted.show('Updated with success !', { position: 'bottom-right', type: 'success', theme:'outline', icon: 'sentiment_very_satisfied',  duration : 5000})
                 resolve(success)
             })
             .catch(error => {
+                Vue.toasted.show('An error occured while updating', { position: 'bottom-right', type: 'error', theme:'outline', icon: 'sentiment_dissatisfied',  duration : 5000})
                 reject(error)
             })
     })
@@ -68,6 +73,7 @@ function deleteUser(id) {
                 resolve(success)
             })
             .catch(error => {
+                Vue.toasted.show('An error occured while deleting', { position: 'bottom-right', type: 'error', theme:'outline', icon: 'sentiment_dissatisfied',  duration : 5000})
                 reject(error)
             })
     })
