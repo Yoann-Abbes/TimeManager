@@ -34,7 +34,8 @@ _app-deploy: &app-deploy
     - pip install awscli --upgrade --user
   script:
     - npm install
-    - aws s3 sync .dist s3://timemanagers --delete
+    - ls -la
+    - aws s3 sync ./dist s3://timemanagers --delete
 jobs:
   include:
     - <<: *integration-tests
