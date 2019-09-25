@@ -8,11 +8,11 @@ export const authService = {
 function login(username, password) {
     return new Promise((resolve, reject) => {
         axios.post(process.env.VUE_APP_API_URL + '/api/users/sign_in', {
-                user:{
-                    username: username,
-                    password: password
-                }
-            })
+            user:{
+                username: username,
+                password: password
+            }
+        })
             .then(success => {
                 localStorage.setItem('user', JSON.stringify(success.data))
                 axios.defaults.headers.common['Authorization'] = 'Bearer '+ success.data.jwt;
@@ -24,20 +24,8 @@ function login(username, password) {
     })
 }
 
-function logout() {
-    return new Promise((resolve, reject) => {
-        const regex = /Bearer /gi
-        let auth = axios.defaults.headers.common['Authorization']
-        axios.delete(process.env.VUE_APP_API_URL + '/api/users/sign_out',{
-            headers:{
-                "x-xsrf-token": auth.replace(regex, '')
-            }
-        }).then(
-            success => {
-                delete axios.defaults.headers.common['Authorization']
-                localStorage.removeItem('user')
-                resolve()
-            }
-        )
-    })
+function logout(token) {
+    delete axios.defaults.headers.common['Authorization']
+    localStorage.removeItem('user')
+    location.reload()
 }

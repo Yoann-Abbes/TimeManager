@@ -1,85 +1,49 @@
 <template>
-    <div class="ClockManager">
-        <h1> ClockManager  </h1>
-           <span style="text"> {{refresh | chrono}} </span> <button @click.prevent="clock">clock</button>
+    <div class="ClockManager" style="width:100%">
+        <div v-show="getClock.status === 'loading'">
+            <md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
+        </div>
+        <div class="chrono-content" style="width:100%" v-show="getClock.status === 'success'">
+            <h2>Report Daily work</h2>
+            <div class="chrono-time">
+                <span>{{refresh | chrono}}</span>
+            </div>
+            <div>
+                <button @click.prevent="clock">{{ (getClock.boolean === false) ? 'clock in' : 'clock out'}}</button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import { clockManagerService } from "../_services/clockmanager.service";
-
     export default {
         data(){
             return {
-                startDateTime: 0,
-                currentTime: 0,
-                status: false,
-                interval: null
+
             }
         },
         computed: {
-            getStatus(){
-                return this.status
+            getClock(){
+                return this.$store.getters['clockModule/getCurrentClock']
             },
             refresh(){
-                const current = ((this.currentTime - this.startDateTime - 7200) >= 0) ? (this.currentTime - this.startDateTime - 7200) : 0
-                return current
+                return this.$store.getters['clockModule/getRefreshTime']
+            },
+            getBool(){
+                return this.$store.getters['clockModule/getBool']
             }
         },
         methods:{
             clock(){
-                clockManagerService.createClock(this.$root.user.id, !this.status).then(
-                    success => {
-                        if(this.status === false){
-                            this.startInterval()
-                        }else{
-                            clearInterval(this.interval)
-                        }
-                        if(Array.isArray(success.data.data)){
-                            this.startDateTime = this.dateToTimestamp(new Date(success.data.data[0].time))
-                        }else{
-                            this.startDateTime = this.dateToTimestamp(new Date(success.data.data.time))
-                        }
-                        this.status = !this.status
-                    },
-                    error => {
-                        console.log(error)
-                    }
-                )
-            },
-            startInterval(){
-                this.interval = setInterval(() => {
-                    let dt = new Date()
-                    dt.setHours(dt.getHours() + 2)
-                    this.currentTime = this.dateToTimestamp(dt)
-                }, 1000)
-            },
-            dateToTimestamp(d){
-               return Math.round(d.getTime() / 1000);
+                const userId = this.$store.getters['userModule/getLoggedUser'].id
+                this.$store.dispatch('clockModule/createClock',{userId})
             }
         },
         mounted() {
-            clockManagerService.getClock(this.$root.user.id).then(
+            this.$store.dispatch('userModule/getLoggedUser').then(
                 success => {
-                    if(Array.isArray(success.data.data)){
-                        if(success.data.data.length > 0){
-                            this.startDateTime = this.dateToTimestamp(new Date(success.data.data[0].time))
-                            this.status = success.data.data[0].status
-                            this.startInterval()
-                        }
-
-                    }else{
-                        if(Object.keys(success.data.data).length > 0){
-                            this.startDateTime = this.dateToTimestamp(new Date(success.data.data.time))
-                            this.status = success.data.data.status
-                            this.startInterval()
-                        }
-                    }
-
-
-                },
-                error => {
-                    console.log(error)
+                    const userId = this.$store.getters['userModule/getLoggedUser'].id
+                    this.$store.dispatch('clockModule/getClock',{userId})
                 }
             )
         },
@@ -94,11 +58,26 @@
                 min = (min > 9) ? min : "0" + min
                 sec = (sec > 9) ? sec : "0" + sec
 
-                return hour + ":" + min + ": " + sec
+                return hour + ":" + min + ":" + sec
             }
         },
         beforeDestroy () {
-            clearInterval(this.interval)
+            this.$store.dispatch('clockModule/clearInterval')
         }
     }
 </script>
+
+<style>
+    html{
+        box-sizing: border-box;
+    }
+    .chrono-content{
+        text-align: center;
+    }
+    .chrono-time{
+        height:50px;
+        position:relative;
+        font-size: 50px;
+        margin-bottom:5px;
+    }
+</style>

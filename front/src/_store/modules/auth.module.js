@@ -41,12 +41,8 @@ export const authModule = {
                 }
             )
         },
-        logout({ commit }) {
-            authService.logout().then(
-                success => {
-                    location.reload()
-                }
-            )
+        logout() {
+            authService.logout()
         },
         reload({commit}) {
             commit('reload', JSON.parse(localStorage.getItem('user')).jwt)
