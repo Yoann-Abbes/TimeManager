@@ -14,7 +14,7 @@ defmodule GothamWeb.UserController do
   def index(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
     users = Auth.list_users()
-    if user.id == 1 do
+    if user.role_id == 1 do
       json(conn, "You have to be Manager.")
     end 
     render(conn, "index.json", users: users)
@@ -43,12 +43,24 @@ defmodule GothamWeb.UserController do
     user = Guardian.Plug.current_resource(conn)
 
     if user.role_id == 3 || user.role_id == 2 do
-    Auth.update_team(user, id)
-    render(conn, "show.json", user: user)
-    else
-      {:error, :unauthorized}
+      Auth.add_member_to_team(user, id)
+      user = Auth.get_user!(user.id)
+      render(conn, "show.json", user: user)
     end
+    json(conn, "Unauthorized action")
   end
+
+  def remove_from_team(conn, %{"id" => id}) do
+    user = Guardian.Plug.current_resource(conn)
+
+    if user.role_id == 3 || user.role_id == 2 do
+      Auth.remove_member_from_team(user, id)
+      user = Auth.get_user!(user.id)
+      render(conn, "show.json", user: user)
+    end
+    json(conn, "Unauthorized action")
+  end
+
 
   def list_team(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
@@ -260,7 +272,7 @@ defmodule GothamWeb.UserController do
   end
 
   swagger_path :add_in_team do
-    post "/add"
+    post "/add_in_team"
     summary "Add a user to a manager's team"
     description "Add a user to a manager's team"
     parameters do
@@ -270,7 +282,16 @@ defmodule GothamWeb.UserController do
     response 422, "Unprocessable Entity", Schema.ref(:Error)
   end
 
-
+  swagger_path :remove_from_team do
+    post "/remove_from_team"
+    summary "Remove a user from a manager's team"
+    description "Remove a user from a manager's team"
+    parameters do
+      id :path, :integer, "Users id", required: true
+    end
+    response 201, "Ok", Schema.ref(:Users)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
 
   swagger_path :delete do
     delete "/:id"

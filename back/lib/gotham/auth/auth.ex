@@ -114,11 +114,17 @@ defmodule Gotham.Auth do
     |> Repo.update()
   end
 
-  def update_team(%User{} = user, attrs) do
-    IO.inspect attrs
+  def add_member_to_team(%User{} = user, attrs) do
+
     id = user.id
     from(u in User, where: u.id == ^id) |>
     Repo.update_all(push: [team: attrs])
+  end
+
+  def remove_member_from_team(%User{} = user, attrs) do
+    id = user.id
+    from(u in User, where: u.id == ^id) |>
+    Repo.update_all(pull: [team: attrs])
   end
 
   @doc """
