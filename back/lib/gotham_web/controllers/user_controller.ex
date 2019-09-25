@@ -12,9 +12,23 @@ defmodule GothamWeb.UserController do
   action_fallback GothamWeb.FallbackController
 
   def index(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
     users = Auth.list_users()
+    if user.id == 1 do
+      json(conn, "You have to be Manager.")
+    end 
     render(conn, "index.json", users: users)
   end
+
+  def show_by_id(conn, %{"id" => id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    user = Auth.get_user!(id)
+    if current_user.role_id == 1 do
+      json(conn, "You have to be Manager.")
+    end 
+    render(conn, "show.json", user: user)
+  end
+
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Auth.create_user(user_params) do
@@ -31,6 +45,16 @@ defmodule GothamWeb.UserController do
     if user.role_id == 3 || user.role_id == 2 do
     Auth.update_team(user, id)
     render(conn, "show.json", user: user)
+    else
+      {:error, :unauthorized}
+    end
+  end
+
+  def list_team(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+
+    if user.role_id == 3 || user.role_id == 2 do
+      json(conn, user.team)
     else
       {:error, :unauthorized}
     end
@@ -56,16 +80,30 @@ defmodule GothamWeb.UserController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Auth.get_user!(id)
     current_user = Guardian.Plug.current_resource(conn)
-    with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
-      render(conn, "show.json", user: user)
+    team = current_user.team
+    if Map.has_key?(user_params, "role_id") && current_user.role_id !== 3 do
+      json(conn, "Only General Manager can promote.")
+    else 
+        if current_user.role_id == 3
+        || id == current_user.id
+        || (current_user.role_id == 2 && id in team) do
+        with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
+          render(conn, "show.json", user: user)
+        end
+      end
     end
+    json(conn, "Unauthorized action")
   end
 
   def remove(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
     current_user = Guardian.Plug.current_resource(conn)
-    with {:ok, %User{}} <- Auth.delete_user(user) do
-      send_resp(conn, :no_content, "")
+    if current_user.id == id || current_user.role_id == 3 do
+      with {:ok, %User{}} <- Auth.delete_user(user) do
+        send_resp(conn, :no_content, "")
+      end
+    else
+      json(conn, "You are not allowed to delete this user.")
     end
   end
 
@@ -157,6 +195,23 @@ defmodule GothamWeb.UserController do
     response 201, "Ok"
     response 422, "Unprocessable Entity", Schema.ref(:Error)
   end
+
+  swagger_path :show_by_id do
+    get "/:id"
+    summary "Show users data by id"
+    description "Show users data by id"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+  swagger_path :list_team do
+    get "/team"
+    summary "List the current user team"
+    description "List the current user team"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
 
   swagger_path :sign_in do
     post "/sign_in"
