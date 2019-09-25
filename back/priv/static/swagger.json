@@ -120,6 +120,39 @@
         "description": "Sign in with credentials"
       }
     },
+    "/remove_from_team": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove a user from a manager's team",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "integer",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "Users id"
+          }
+        ],
+        "operationId": "GothamWeb.UserController.remove_from_team",
+        "description": "Remove a user from a manager's team"
+      }
+    },
     "/me": {
       "get": {
         "tags": [
@@ -142,7 +175,7 @@
         "description": "Show current users data"
       }
     },
-    "/add": {
+    "/add_in_team": {
       "post": {
         "tags": [
           "User"

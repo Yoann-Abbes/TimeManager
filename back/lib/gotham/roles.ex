@@ -5,7 +5,6 @@ defmodule Gotham.Roles do
 
   schema "roles" do
     field :label, :string
-
   end
 
   @doc false
