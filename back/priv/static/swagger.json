@@ -1,6 +1,28 @@
 {
   "swagger": "2.0",
   "paths": {
+    "/team": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "List the current user team",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.UserController.list_team",
+        "description": "List the current user team"
+      }
+    },
     "/sign_up": {
       "post": {
         "tags": [
@@ -120,7 +142,7 @@
         "description": "Show current users data"
       }
     },
-    "/add_in_team": {
+    "/add": {
       "post": {
         "tags": [
           "User"
@@ -322,6 +344,26 @@
         ],
         "operationId": "GothamWeb.UserController.update",
         "description": "Update an existing user"
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Show users data by id",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.UserController.show_by_id",
+        "description": "Show users data by id"
       }
     },
     "/": {
