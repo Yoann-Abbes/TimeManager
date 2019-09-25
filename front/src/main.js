@@ -7,6 +7,7 @@ import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
 import moment from 'vue-moment'
 import Raphael from 'raphael/raphael'
 import store from './_store'
+import Toasted from 'vue-toasted';
 
 global.Raphael = Raphael
 
@@ -20,7 +21,8 @@ Vue.use(VueMaterial)
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
-Vue.use(moment);
+Vue.use(moment)
+Vue.use(Toasted)
 
 if(localStorage.getItem('user')){
     axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(localStorage.getItem('user')).jwt
