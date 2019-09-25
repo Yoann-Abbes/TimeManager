@@ -62,7 +62,7 @@
             }
         },
         beforeDestroy () {
-            this.$store.dispatch('clockModule/clearInterval')
+            this.$store.dispatch('clockModule/resetInterval')
         }
     }
 </script>

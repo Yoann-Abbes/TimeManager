@@ -48,6 +48,13 @@ export const clockModule = {
                     }, 1000)
                 } else {
                     clearInterval(state.clock.interval)
+                    state.clock = {
+                        status: 'success',
+                        time: 0,
+                        current: 0,
+                        boolean: false,
+                        interval: 0
+                    }
                 }
                 if (Array.isArray(payload.data.data)) {
                     let dt = new Date(payload.data.data[0].time)
@@ -58,6 +65,9 @@ export const clockModule = {
                 }
                 state.clock.boolean = payload.data.data.status
             }
+        },
+        resetInterval(state){
+            clearInterval(state.clock.interval)
         },
         getLoading(state){
             state.clock.status = 'loading'
