@@ -35,7 +35,7 @@ _app-deploy: &app-deploy
     - pip install awscli --upgrade --user
   script:
     - npm install
-    - aws s3 sync ./.vuepress/dist s3://$S3_BUCKET$SITE_BASE --delete
+    - aws s3 sync ./.vuepress/dist s3://timemanagers --delete
 jobs:
   include:
     - <<: *integration-tests
