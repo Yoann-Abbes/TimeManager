@@ -12,11 +12,36 @@ _integration-tests: &integration-tests
   script:
     - docker-compose -f ./test.yml up
 
+
+_app-deploy: &app-deploy
+  stage: Deployments
+  language: node_js
+  node_js: 10
+  env: &app-deploy-env
+    - NODE_ENV=production
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  cache:
+    npm: true
+    directories:
+      - $HOME/.cache/pip
+      - node_modules
+  addons:
+    apt:
+      packages:
+        - python
+        - python-pip
+  install:
+    - pip install awscli --upgrade --user
+  script:
+    - npm install
+    - aws s3 sync ./.vuepress/dist s3://$S3_BUCKET$SITE_BASE --delete
 jobs:
   include:
-    # ---------------------------------------
-    # Integration tests
-    # ---------------------------------------
     - <<: *integration-tests
       stage: Integration tests
       name: Unit Tests
+
+    - <<: *app-deploy
+      stage: Deployments
+      name: Deployment
