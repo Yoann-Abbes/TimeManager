@@ -18,7 +18,6 @@ _app-deploy: &app-deploy
   language: node_js
   node_js: 10
   env: &app-deploy-env
-    - NODE_ENV=production
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   cache:
@@ -35,7 +34,7 @@ _app-deploy: &app-deploy
     - pip install awscli --upgrade --user
   script:
     - npm install
-    - aws s3 sync ./.vuepress/dist s3://timemanagers --delete
+    - aws s3 sync .dist s3://timemanagers --delete
 jobs:
   include:
     - <<: *integration-tests
