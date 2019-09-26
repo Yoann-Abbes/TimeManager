@@ -10,7 +10,7 @@ _integration-tests: &integration-tests
   install:
     - sudo sysctl -w vm.max_map_count=262144
   script:
-    - docker-compose -f ./back/test.yml up
+    - mix test #docker-compose -f ./back/test.yml up
 
 
 _app-deploy: &app-deploy
