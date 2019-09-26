@@ -68,6 +68,7 @@ export const clockModule = {
         },
         resetInterval(state){
             clearInterval(state.clock.interval)
+            state.clock.status = 'loading'
         },
         getLoading(state){
             state.clock.status = 'loading'
@@ -76,7 +77,6 @@ export const clockModule = {
             state.clock.status = 'error'
         },
         getSuccess(state, payload){
-            state.clock.status = 'success'
             if(Array.isArray(payload.data.data)){
                 if(payload.data.data.length > 0){
                     let dt = new Date(payload.data.data[0].time)
@@ -86,7 +86,10 @@ export const clockModule = {
                         let dt = new Date()
                         dt.setHours(dt.getHours() + 2)
                         state.clock.current = Math.round(dt.getTime() / 1000)
+                        state.clock.status = 'success'
                     }, 1000)
+                }else{
+                    state.clock.status = 'success'
                 }
             }else{
                 if(Object.keys(payload.data.data).length > 0){
@@ -97,6 +100,7 @@ export const clockModule = {
                         let dt = new Date()
                         dt.setHours(dt.getHours() + 2)
                         state.clock.current = Math.round(dt.getTime() / 1000)
+                        state.clock.status = 'success'
                     }, 1000)
                 }
             }
