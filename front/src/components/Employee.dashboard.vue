@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Employee dashboard</h1>
-        <div class="dashboard-employee">
+        <div class="dashboard">
             <md-content><ClockManager/></md-content>
             <md-content></md-content>
             <md-content></md-content>
@@ -20,11 +20,11 @@
     }
 </script>
 <style>
-    .dashboard-employee {
+    .dashboard {
         display: flex;
         flex-flow: row wrap;
     }
-    .dashboard-employee > .md-content {
+    .dashboard > .md-content {
         flex:1 1 420px;
         display: flex;
         margin: 5px;

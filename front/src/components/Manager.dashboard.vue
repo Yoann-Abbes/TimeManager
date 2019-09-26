@@ -1,11 +1,21 @@
 <template>
     <div>
         <h1>Manager dashboard</h1>
+        <div class="dashboard">
+        <md-content><ClockManager/></md-content>
+        <md-content></md-content>
+        <md-content></md-content>
+        <md-content></md-content>
+        </div>
     </div>
 </template>
 
 <script>
-export default {
+    import ClockManager from "./ClockManager"
 
-}
+    export default {
+        components:{
+            ClockManager
+        }
+    }
 </script>
