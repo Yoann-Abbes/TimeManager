@@ -6,6 +6,7 @@ COPY . /app/front/
 WORKDIR /app/front
 
 
-RUN npm install
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
+RUN npm install
+
