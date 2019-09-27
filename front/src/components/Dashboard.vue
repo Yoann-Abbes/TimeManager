@@ -4,9 +4,9 @@
       <md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
     </div>
     <div v-show="getLoggedUser.status === 'success'">
-      <employee v-show="getLoggedUser.role === 1"/>
-      <manager v-show="getLoggedUser.role === 2"/>
-      <general v-show="getLoggedUser.role === 3"/>
+      <employee v-if="getLoggedUser.role === 1"/>
+      <manager v-if="getLoggedUser.role === 2"/>
+      <general v-if="getLoggedUser.role === 3"/>
     </div>
   </div>
 </template>
