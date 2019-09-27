@@ -2,4 +2,4 @@
 
 set -e
 
-exec docker-compose -f ./back/test.yml up
+exec docker-compose -f ./back/test.yml run phoenix
