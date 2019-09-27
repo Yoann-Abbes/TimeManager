@@ -1,5 +1,5 @@
  # Integration tests
-_integration-tests: &integration-tests
+_unit-tests: &unit-tests
   os: linux
   sudo: required
   language: minimal
@@ -10,42 +10,25 @@ _integration-tests: &integration-tests
   install:
     - sudo sysctl -w vm.max_map_count=262144
   script:
-    - docker-compose -f ./back/test.yml up
+    - ./test.sh
 
 
 _app-deploy: &app-deploy
   stage: Deployments
-  language: node_js
-  node_js: 10
-  if: type = push AND branch=master
-  env: &app-deploy-env
-    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-  cache:
-    npm: true
-    directories:
-      - $HOME/.cache/pip
-      - node_modules
-  addons:
-    apt:
-      packages:
-        - python
-        - python-pip
-  install:
-    - pip install awscli --upgrade --user
+  language: minimal
+  services: docker
+  if: type=push AND branch=master
   script:
-    - cd front
-    - npm install
-    - npm run build
-    - aws s3 sync ./dist s3://timemanagers --delete
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker-compose build
+    - docker build ./back/ -t yabbes/time-manager-back
+    - docker build ./front/ -t yabbes/time-manager-front
     - docker push yabbes/time-manager-back:latest
     - docker push yabbes/time-manager-front:latest
+
 jobs:
   include:
-    - <<: *integration-tests
-      stage: Integration tests
+    - <<: *unit-tests
+      stage: Unit tests
       name: Unit Tests
 
     - <<: *app-deploy
