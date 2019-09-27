@@ -81,10 +81,10 @@ export const userModule = {
             state.delete.status = 'success'
         },
         getLoading(state) {
-            state.user.status = 'loading'
+            state.get.status = 'loading'
         },
         getError(state) {
-            state.user.status = 'error'
+            state.get.status = 'error'
         },
         getSuccess(state, payload) {
             state.get.status = 'success'
@@ -157,10 +157,11 @@ export const userModule = {
                 }
             )
         },
-        getUser({ commit }, { id }) {
+        async getUser({ commit }, { id }) {
             commit('getLoading')
-            userService.getUser(id).then(
+            await userService.getUser(id).then(
                 success => {
+                    console.log(success)
                     commit('getSuccess', success)
                 },
                 error => {

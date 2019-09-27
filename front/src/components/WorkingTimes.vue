@@ -1,4 +1,6 @@
 <template>
+
+
     <div class="workingtimes">
         <div>
             <md-table class="column-table" style="max-height:390px">
@@ -34,6 +36,7 @@
 
             }
         },
+        props: ['user'],
         computed:{
             getWorkingTimes(){
                 return this.$store.getters['workingtimeModule/getWorkingTimes'].data
@@ -63,13 +66,8 @@
             }
         },
         mounted(){
-            this.$store.dispatch('userModule/getLoggedUser').then(
-                success => {
-                    const userId = this.$store.getters['userModule/getLoggedUser'].id
-                    this.$store.dispatch('workingtimeModule/getWorkingTimes', {userId})
-                }
-            )
-
+            const id = this.user.id
+            this.$store.dispatch('workingtimeModule/getWorkingTimes', {userId: id})
         }
     }
 </script>

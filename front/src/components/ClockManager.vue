@@ -8,7 +8,7 @@
             <div class="chrono-time">
                 <span>{{refresh | chrono}}</span>
             </div>
-            <div>
+            <div v-if="!$route.params.userId">
                 <button @click.prevent="clock">{{ (getClock.boolean === false) ? 'clock in' : 'clock out'}}</button>
             </div>
         </div>
@@ -22,6 +22,7 @@
 
             }
         },
+        props: ['user'],
         computed: {
             getClock(){
                 return this.$store.getters['clockModule/getCurrentClock']
@@ -35,17 +36,13 @@
         },
         methods:{
             clock(){
-                const userId = this.$store.getters['userModule/getLoggedUser'].id
+                const userId = this.user.id
                 this.$store.dispatch('clockModule/createClock',{userId})
             }
         },
         mounted() {
-            this.$store.dispatch('userModule/getLoggedUser').then(
-                success => {
-                    const userId = this.$store.getters['userModule/getLoggedUser'].id
-                    this.$store.dispatch('clockModule/getClock',{userId})
-                }
-            )
+            const userId = this.user.id
+            this.$store.dispatch('clockModule/getClock',{userId})
         },
         filters:{
             chrono(value){
