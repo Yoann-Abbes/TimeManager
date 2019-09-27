@@ -1,4 +1,5 @@
 import { clockManagerService } from '../../_services/clockmanager.service'
+import store from "../index"
 
 export const clockModule = {
     namespaced: true,
@@ -48,6 +49,13 @@ export const clockModule = {
                     }, 1000)
                 } else {
                     clearInterval(state.clock.interval)
+                    state.clock = {
+                        status: 'success',
+                        time: 0,
+                        current: 0,
+                        boolean: false,
+                        interval: 0
+                    }
                 }
                 if (Array.isArray(payload.data.data)) {
                     let dt = new Date(payload.data.data[0].time)
@@ -59,6 +67,11 @@ export const clockModule = {
                 state.clock.boolean = payload.data.data.status
             }
         },
+        resetInterval(state){
+            clearInterval(state.clock.interval)
+            state.clock.interval = 0
+            state.clock.status = 'loading'
+        },
         getLoading(state){
             state.clock.status = 'loading'
         },
@@ -66,7 +79,6 @@ export const clockModule = {
             state.clock.status = 'error'
         },
         getSuccess(state, payload){
-            state.clock.status = 'success'
             if(Array.isArray(payload.data.data)){
                 if(payload.data.data.length > 0){
                     let dt = new Date(payload.data.data[0].time)
@@ -76,7 +88,10 @@ export const clockModule = {
                         let dt = new Date()
                         dt.setHours(dt.getHours() + 2)
                         state.clock.current = Math.round(dt.getTime() / 1000)
+                        state.clock.status = 'success'
                     }, 1000)
+                }else{
+                    state.clock.status = 'success'
                 }
             }else{
                 if(Object.keys(payload.data.data).length > 0){
@@ -87,6 +102,7 @@ export const clockModule = {
                         let dt = new Date()
                         dt.setHours(dt.getHours() + 2)
                         state.clock.current = Math.round(dt.getTime() / 1000)
+                        state.clock.status = 'success'
                     }, 1000)
                 }
             }
@@ -98,6 +114,7 @@ export const clockModule = {
             clockManagerService.createClock(userId, state.clock.boolean).then(
                 success => {
                     commit('createSuccess', success)
+                    store.dispatch('workingtimeModule/getWorkingTimes', {userId})
                 },
                 error => {
                     commit('createError')
@@ -109,6 +126,7 @@ export const clockModule = {
             clockManagerService.getClock(userId).then(
                 success => {
                     commit('getSuccess', success)
+                    store.dispatch('workingtimeModule/getWorkingTimes', {userId})
                 },
                 error => {
                     commit('getError')

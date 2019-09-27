@@ -12,7 +12,7 @@
                 <span class="md-list-item-text">lastname : {{getLoggedUser.lastname}}</span>
             </md-list-item>
             <md-list-item>
-                <span class="md-list-item-text">role : {{role[getLoggedUser.role][0]}}</span>
+                <span class="md-list-item-text">role : {{getRole}}</span>
             </md-list-item>
             <md-list-item>
                 <span class="md-list-item-text">email : {{getLoggedUser.email}}</span>
@@ -87,6 +87,9 @@
         computed:{
             getLoggedUser(){
                 return this.$store.getters['userModule/getLoggedUser']
+            },
+            getRole(){
+                return this.role[this.$store.getters['userModule/getLoggedUser'].role][0]
             }
         },
         methods:{

@@ -1,60 +1,74 @@
 <template>
-    <div class="WorkingTimes">
-        <div v-show="$root.user.status === 'success'">
-            <h1>Working times
-                <router-link :to="{ name: 'workingTime.dialog', params: {userId: $root.getCurrentUser.id}}">
-                    <md-icon>post_add</md-icon>
-                </router-link>
-            </h1>
-            <md-table>
+
+
+    <div class="workingtimes">
+        <div>
+            <md-table class="column-table" style="max-height:390px">
                 <md-table-row>
-                    <md-table-head md-numeric>ID</md-table-head>
+                    <md-table-head>Date</md-table-head>
                     <md-table-head>Start</md-table-head>
                     <md-table-head>End</md-table-head>
+                    <md-table-head>Total (hour)</md-table-head>
                 </md-table-row>
-                <md-table-row v-for="item in workingTimes.data" :key="item.id">
-                    <md-table-cell md-numeric>{{item.id}}</md-table-cell>
-                    <md-table-cell>{{ item.start | moment("MMMM Do YYYY, h:mm:ss") }}</md-table-cell>
-                    <md-table-cell>{{ item.end | moment("MMMM Do YYYY, h:mm:ss") }}</md-table-cell>
-                    <md-table-cell>
-                            <router-link :to="{ name: 'workingTime.dialog', params: {userId: $root.getCurrentUser.id, workingtimeId: item.id, start: item.start, end: item.end}}">
-                                <md-icon>edit</md-icon>
-                            </router-link>
-                    </md-table-cell>
+                <md-table-row :key="item.id" v-for="item in getWorkingTimes">
+                    <md-table-cell>{{item.start | filterdate }}</md-table-cell>
+                    <md-table-cell>{{item.start | filtertime}}</md-table-cell>
+                    <md-table-cell>{{item.end | filtertime}}</md-table-cell>
+                    <md-table-cell>{{ calculateTotal(item.start, item.end) }}</md-table-cell>
+                </md-table-row>
+            </md-table>
+            <md-table class="row-table" style="max-height:390px">
+                <md-table-row :key="item.id" v-for="item in getWorkingTimes" class="with-border-bottom">
+                    <md-table-row><b>Date : </b> {{item.start | filterdate }}</md-table-row>
+                    <md-table-row><b>Start : </b>{{item.start | filtertime}}</md-table-row>
+                    <md-table-row><b>End : </b>{{item.end | filtertime}}</md-table-row>
+                    <md-table-row><b>Total (hour) : </b>{{ calculateTotal(item.start, item.end) }}</md-table-row>
                 </md-table-row>
             </md-table>
         </div>
-        <router-view></router-view>
     </div>
 </template>
 
 <script>
-    import WorkingTime from "./WorkingTime"
-    import {workingTimesService} from "../_services/workingtimes.service"
-
     export default {
         data(){
-          return {
-              workingTimes: {
-                  data: []
-              },
-              dialogWorkingTimeShow: false
-          }
+            return {
+
+            }
         },
-        methods: {
+        props: ['user'],
+        computed:{
             getWorkingTimes(){
-                workingTimesService.getWorkingTimes(this.$root.user.id).then(
-                    success => {
-                        this.workingTimes.data = success.data.data
-                    },
-                    error => {
-                        this.workingTimes.data = error.data.data
-                    }
-                )
+                return this.$store.getters['workingtimeModule/getWorkingTimes'].data
+            }
+        },
+        methods:{
+            calculateTotal(start, end){
+                return this.diff_hours(new Date(start),new Date(end))
             },
+            diff_hours(dt2, dt1){
+                let diff =(dt2.getTime() - dt1.getTime()) / 1000
+                diff /= (60 * 60)
+                return Math.abs(Math.round(diff))
+            }
+
+        },
+        filters:{
+            filterdate(item){
+                let newDate = new Date(item)
+                let date = newDate.getFullYear() + "-" + ("0" + newDate.getMonth()).slice(-2) + "-" + ("0" + newDate.getDay()).slice(-2)
+                return date
+            },
+            filtertime(item){
+                let newDate = new Date(item)
+                let time = ("0" + newDate.getHours()).slice(-2) + ":" + ("0" + newDate.getMinutes()).slice(-2) + ":" + ("0" + newDate.getSeconds()).slice(-2)
+                return time
+            }
         },
         mounted(){
-            this.getWorkingTimes()
+            const id = this.user.id
+            this.$store.dispatch('workingtimeModule/getWorkingTimes', {userId: id})
         }
     }
 </script>
+
