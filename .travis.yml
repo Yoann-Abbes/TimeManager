@@ -1,5 +1,5 @@
  # Integration tests
-_integration-tests: &integration-tests
+_unit-tests: &unit-tests
   os: linux
   sudo: required
   language: minimal
