@@ -17,9 +17,6 @@ _app-deploy: &app-deploy
   stage: Deployments
   language: node_js
   node_js: 10
-  env: &app-deploy-env
-    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   cache:
     npm: true
     directories:
@@ -33,14 +30,15 @@ _app-deploy: &app-deploy
   install:
     - pip install awscli --upgrade --user
   script:
-    - cd front
-    - npm install
-    - npm run build
-    - aws s3 sync ./dist s3://timemanagers --delete
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker-compose build
+    - docker push yabbes/time-manager-back:latest
+    - docker push yabbes/time-manager-front:latest
+
 jobs:
   include:
-    - <<: *integration-tests
-      stage: Integration tests
+    - <<: *unit-tests
+      stage: Unit tests
       name: Unit Tests
 
     - <<: *app-deploy

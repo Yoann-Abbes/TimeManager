@@ -5,7 +5,7 @@ version: '3'
 services:
     
   front:
-    image: yabbes/time-manager-front:latest
+    image: yabbes/time-manager-front
     ports:
       - "8080:8080"
     volumes:
@@ -19,7 +19,7 @@ services:
   # Our Phoenix container
   phoenix:
     # The build parameters for this container.
-    image: yabbes/time-manager-back:latest
+    image: yabbes/time-manager-back
     environment:
       # Variables to connect to our Postgres server
       PGUSER: postgres
