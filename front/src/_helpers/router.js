@@ -30,7 +30,14 @@ const router = new Router({
             path: '/',
             alias: '/dashboard',
             name: 'dashboard',
-            component: Dashboard
+            component: Dashboard,
+            children: [{
+                path: '/dashboard/:userId?',
+                name: 'dashboard.dialog',
+                components: {
+                    default: Dashboard
+                }
+            }]
         },
         {
             path: '/*',
