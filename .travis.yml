@@ -17,6 +17,7 @@ _app-deploy: &app-deploy
   stage: Deployments
   language: minimal
   services: docker
+  if: type=push AND branch=master
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker build ./back/ -t yabbes/time-manager-back
