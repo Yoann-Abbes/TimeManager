@@ -19,8 +19,8 @@ _app-deploy: &app-deploy
   services: docker
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker build ./back/ -t time-manager-back
-    - docker build ./front/ -t time-manager-front
+    - docker build ./back/ -t yabbes/time-manager-back
+    - docker build ./front/ -t yabbes/time-manager-front
     - docker push yabbes/time-manager-back:latest
     - docker push yabbes/time-manager-front:latest
 
