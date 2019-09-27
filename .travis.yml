@@ -15,23 +15,12 @@ _unit-tests: &unit-tests
 
 _app-deploy: &app-deploy
   stage: Deployments
-  language: node_js
-  node_js: 10
-  cache:
-    npm: true
-    directories:
-      - $HOME/.cache/pip
-      - node_modules
-  addons:
-    apt:
-      packages:
-        - python
-        - python-pip
-  install:
-    - pip install awscli --upgrade --user
+  language: minimal
+  services: docker
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker-compose build
+    - docker build ./back/ -t time-manager-back
+    - docker build ./front/ -t time-manager-front
     - docker push yabbes/time-manager-back:latest
     - docker push yabbes/time-manager-front:latest
 
