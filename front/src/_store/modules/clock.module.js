@@ -68,6 +68,7 @@ export const clockModule = {
         },
         resetInterval(state){
             clearInterval(state.clock.interval)
+            state.clock.interval = 0
             state.clock.status = 'loading'
         },
         getLoading(state){
