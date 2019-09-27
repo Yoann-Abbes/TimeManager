@@ -1,4 +1,5 @@
 import { clockManagerService } from '../../_services/clockmanager.service'
+import store from "../index"
 
 export const clockModule = {
     namespaced: true,
@@ -113,6 +114,7 @@ export const clockModule = {
             clockManagerService.createClock(userId, state.clock.boolean).then(
                 success => {
                     commit('createSuccess', success)
+                    store.dispatch('workingtimeModule/getWorkingTimes', {userId})
                 },
                 error => {
                     commit('createError')
@@ -124,6 +126,7 @@ export const clockModule = {
             clockManagerService.getClock(userId).then(
                 success => {
                     commit('getSuccess', success)
+                    store.dispatch('workingtimeModule/getWorkingTimes', {userId})
                 },
                 error => {
                     commit('getError')
