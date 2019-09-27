@@ -1,7 +1,7 @@
 <template>
     <div class="workingtimes">
         <div>
-            <md-table style="max-height:390px">
+            <md-table class="column-table" style="max-height:390px">
                 <md-table-row>
                     <md-table-head>Date</md-table-head>
                     <md-table-head>Start</md-table-head>
@@ -13,6 +13,14 @@
                     <md-table-cell>{{item.start | filtertime}}</md-table-cell>
                     <md-table-cell>{{item.end | filtertime}}</md-table-cell>
                     <md-table-cell>{{ calculateTotal(item.start, item.end) }}</md-table-cell>
+                </md-table-row>
+            </md-table>
+            <md-table class="row-table" style="max-height:390px">
+                <md-table-row :key="item.id" v-for="item in getWorkingTimes" class="with-border-bottom">
+                    <md-table-row><b>Date : </b> {{item.start | filterdate }}</md-table-row>
+                    <md-table-row><b>Start : </b>{{item.start | filtertime}}</md-table-row>
+                    <md-table-row><b>End : </b>{{item.end | filtertime}}</md-table-row>
+                    <md-table-row><b>Total (hour) : </b>{{ calculateTotal(item.start, item.end) }}</md-table-row>
                 </md-table-row>
             </md-table>
         </div>

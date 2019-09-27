@@ -1,3 +1,4 @@
+
 .md-list-item-content {
     background-color: white;
 }
@@ -31,4 +32,16 @@ a.router-link-exact-active {
 
 .no-p{
     padding:0 !important;
+}
+
+@media (max-width: 600px) {
+    .md-table.column-table {
+        display:none !important;
+    }
+    .md-table.row-table {
+        display:flex;
+    }
+    .md-table.row-table .md-table-row.with-border-bottom {
+        border-bottom:1px solid rgba(0, 0, 0, .1);
+    }
 }
