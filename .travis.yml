@@ -32,8 +32,8 @@ _app-deploy: &app-deploy
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker-compose build
-    - docker push yabbes/time-manager-back:latest
-    - docker push yabbes/time-manager-front:latest
+    - docker push $DOCKER_USERNAME/time-manager-back:latest
+    - docker push $DOCKER_USERNAME/time-manager-front:latest
 
 jobs:
   include:

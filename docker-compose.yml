@@ -5,6 +5,7 @@ version: '3'
 services:
     
   front:
+    container_name: time-manager-front
     image: yabbes/time-manager-front
     ports:
       - "8080:8080"
@@ -18,6 +19,7 @@ services:
 
   # Our Phoenix container
   phoenix:
+    container_name: time-manager-back
     # The build parameters for this container.
     image: yabbes/time-manager-back
     environment:
