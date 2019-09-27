@@ -32,6 +32,7 @@ defmodule GothamWeb.Router do
   scope "/", GothamWeb do
     pipe_through :browser
     get "/", PageController, :index
+    get "/test", PageController, :test
   end
 
 
