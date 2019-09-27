@@ -8,3 +8,27 @@ a.router-link-exact-active {
 .md-dialog {
     background-color: white;
 }
+
+.md-table, .md-table-content, .workingtimes {
+    padding:0 !important;
+    width:100% !important;
+    overflow: hidden;
+}
+
+.md-table {
+    overflow-y: scroll;
+}
+.dashboard {
+    display: flex;
+    flex-flow: row wrap;
+}
+.dashboard .md-content {
+    flex:1 1 420px;
+    display: flex;
+    margin: 5px;
+    max-height: 400px;
+}
+
+.no-p{
+    padding:0 !important;
+}

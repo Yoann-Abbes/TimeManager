@@ -5,29 +5,23 @@
             <md-content><ClockManager/></md-content>
             <md-content></md-content>
             <md-content></md-content>
-            <md-content></md-content>
+            <md-content class="no-p" ><WorkingTimes/></md-content>
         </div>
     </div>
 </template>
 
 <script>
     import ClockManager from "./ClockManager"
+    import WorkingTimes from "./WorkingTimes"
 
     export default {
         components:{
-            ClockManager
+            ClockManager,
+            WorkingTimes
         }
     }
 </script>
 <style>
-    .dashboard {
-        display: flex;
-        flex-flow: row wrap;
-    }
-    .dashboard > .md-content {
-        flex:1 1 420px;
-        display: flex;
-        margin: 5px;
-        max-height: 400px;
-    }
+
+
 </style>

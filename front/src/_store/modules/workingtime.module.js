@@ -67,7 +67,7 @@ export const workingtimeModule = {
             commit('workingtimesLoading')
             workingTimesService.getWorkingTimes(userId).then(
                 success => {
-                    commit('workingtimesSuccess')
+                    commit('workingtimesSuccess', success)
                 },
                 error => {
                     commit('workingtimesError')
