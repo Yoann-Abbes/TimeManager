@@ -95,14 +95,16 @@ defmodule GothamWeb.UserController do
     team = current_user.team
     if Map.has_key?(user_params, "role_id") && current_user.role_id !== 3 do
       json(conn, "Only General Manager can promote.")
-    else 
-        if current_user.role_id == 3
-        || id == current_user.id
-        || (current_user.role_id == 2 && id in team) do
+    else
+      # IO.puts user.role_id
+      # IO.puts current_user.role_id
+      #   if current_user.role_id == 3
+      #   || user.role_id == current_user.role_id
+      #   || (current_user.role_id == 2 && id in team) do
         with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
           render(conn, "show.json", user: user)
         end
-      end
+      # end
     end
     json(conn, "Unauthorized action")
   end
