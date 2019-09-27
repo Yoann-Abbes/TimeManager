@@ -200,6 +200,15 @@ defmodule GothamWeb.UserController do
     response 422, "Unprocessable Entity", Schema.ref(:Error)
   end
   
+  swagger_path :index do
+    get "/"
+    summary "Show all users data"
+    description "Show all users data"
+    response 201, "Ok"
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
+  end
+
+
   swagger_path :show do
     get "/me"
     summary "Show current users data"

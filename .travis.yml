@@ -12,11 +12,42 @@ _integration-tests: &integration-tests
   script:
     - docker-compose -f ./back/test.yml up
 
+
+_app-deploy: &app-deploy
+  stage: Deployments
+  language: node_js
+  node_js: 10
+  if: type = push AND branch=master
+  env: &app-deploy-env
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  cache:
+    npm: true
+    directories:
+      - $HOME/.cache/pip
+      - node_modules
+  addons:
+    apt:
+      packages:
+        - python
+        - python-pip
+  install:
+    - pip install awscli --upgrade --user
+  script:
+    - cd front
+    - npm install
+    - npm run build
+    - aws s3 sync ./dist s3://timemanagers --delete
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker-compose build
+    - docker push yabbes/time-manager-back:latest
+    - docker push yabbes/time-manager-front:latest
 jobs:
   include:
-    # ---------------------------------------
-    # Integration tests
-    # ---------------------------------------
     - <<: *integration-tests
       stage: Integration tests
       name: Unit Tests
+
+    - <<: *app-deploy
+      stage: Deployments
+      name: Deployment
