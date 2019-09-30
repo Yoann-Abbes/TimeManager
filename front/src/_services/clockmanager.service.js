@@ -20,12 +20,8 @@ function createClock(userId, status){
                 resolve(success)
             })
             .catch(error => {
-                if(error.response.status !== 404){
                     Vue.toasted.show('An error occured while created/changed clock', { position: 'bottom-right', type: 'error', theme:'outline', icon: 'sentiment_dissatisfied',  duration : 5000})
                     reject(error)
-                }else{
-                    resolve(error.response.status)
-                }
             })
     })
 }
