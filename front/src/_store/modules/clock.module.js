@@ -69,8 +69,13 @@ export const clockModule = {
         },
         resetInterval(state){
             clearInterval(state.clock.interval)
-            state.clock.interval = 0
-            state.clock.status = 'loading'
+            state.clock = {
+                status: 'loading',
+                time: 0,
+                current: 0,
+                boolean: false,
+                interval: 0
+            }
         },
         getLoading(state){
             state.clock.status = 'loading'
@@ -80,10 +85,11 @@ export const clockModule = {
         },
         getSuccess(state, payload){
             if(Array.isArray(payload.data.data)){
-                if(payload.data.data.length > 0){
-                    let dt = new Date(payload.data.data[0].time)
+                const last = payload.data.data[0]
+                if(payload.data.data.length > 0 && last.status === true){
+                    let dt = new Date(last.time)
                     state.clock.time = Math.round(dt.getTime() / 1000)
-                    state.clock.boolean = payload.data.data[0].status
+                    state.clock.boolean = last.status
                     state.clock.interval = setInterval(() => {
                         let dt = new Date()
                         dt.setHours(dt.getHours() + 2)
@@ -91,13 +97,16 @@ export const clockModule = {
                         state.clock.status = 'success'
                     }, 1000)
                 }else{
+                    console.log(payload.data.data)
                     state.clock.status = 'success'
                 }
             }else{
-                if(Object.keys(payload.data.data).length > 0){
-                    let dt = new Date(payload.data.data.time)
+
+                const last = Object.values(payload.data.data)[0]
+                if(Object.keys(payload.data.data).length > 0 && last.status === true){
+                    let dt = new Date(last.time)
                     state.clock.time = Math.round(dt.getTime() / 1000)
-                    state.clock.boolean = payload.data.data.status
+                    state.clock.boolean = last.status
                     state.clock.interval = setInterval(() => {
                         let dt = new Date()
                         dt.setHours(dt.getHours() + 2)
