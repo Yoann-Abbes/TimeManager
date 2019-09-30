@@ -7,6 +7,7 @@ main() {
     exit $status
 }
 
+
+exec docker-compose -f ../back/test.yml up
 main
 
-exec docker-compose -f ../back/test.yml run phoenix
