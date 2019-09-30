@@ -21,7 +21,7 @@
 									"    pm.response.to.have.status(200);",
 									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
 									"    var data = pm.response.json();",
-									"    pm.globals.set(\"GM_jwt\", data.jwt);",
+									"    pm.environment.set(\"GM_jwt\", data.jwt);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -32,7 +32,7 @@
 							"script": {
 								"id": "9785bfe3-e312-448c-8e8b-799b467f59f7",
 								"exec": [
-									"postman.setGlobalVariable('server', 'localhost:4000');"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -74,7 +74,7 @@
 							"script": {
 								"id": "e7ae92a9-c28b-4840-a664-31ad9e639436",
 								"exec": [
-									"postman.setGlobalVariable('rand', Math.floor(Math.random() * 1000));"
+									"postman.setEnvironmentVariable('rand', Math.floor(Math.random() * 1000));"
 								],
 								"type": "text/javascript"
 							}
@@ -86,8 +86,8 @@
 								"exec": [
 									"pm.test(\"Status code is 201 created\", function () {",
 									"    pm.response.to.have.status(201);",
-									"    pm.globals.set(\"managerId\", pm.response.json().data.id);",
-									"    pm.globals.set(\"managerUsername\", pm.response.json().data.username);",
+									"    pm.environment.set(\"managerId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"managerUsername\", pm.response.json().data.username);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -141,7 +141,7 @@
 							"script": {
 								"id": "e7ae92a9-c28b-4840-a664-31ad9e639436",
 								"exec": [
-									"postman.setGlobalVariable('rand', Math.floor(Math.random() * 1000));"
+									"postman.setEnvironmentVariable('rand', Math.floor(Math.random() * 1000));"
 								],
 								"type": "text/javascript"
 							}
@@ -153,8 +153,8 @@
 								"exec": [
 									"pm.test(\"Status code is 201 created\", function () {",
 									"    pm.response.to.have.status(201);",
-									"    pm.globals.set(\"employee1Id\", pm.response.json().data.id);",
-									"    pm.globals.set(\"employee1Username\", pm.response.json().data.username);",
+									"    pm.environment.set(\"employee1Id\", pm.response.json().data.id);",
+									"    pm.environment.set(\"employee1Username\", pm.response.json().data.username);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -212,7 +212,7 @@
 									"    pm.response.to.have.status(200);",
 									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
 									"    var data = pm.response.json();",
-									"    pm.globals.set(\"M_jwt\", data.jwt);",
+									"    pm.environment.set(\"M_jwt\", data.jwt);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -255,7 +255,7 @@
 							"script": {
 								"id": "f62f7dfb-1c4f-478e-9879-7c4bb7cfb9d9",
 								"exec": [
-									"postman.setGlobalVariable('rand', Math.floor(Math.random() * 1000));"
+									"postman.setEnvironmentVariable('rand', Math.floor(Math.random() * 1000));"
 								],
 								"type": "text/javascript"
 							}
@@ -267,8 +267,8 @@
 								"exec": [
 									"pm.test(\"Status code is 201 created\", function () {",
 									"pm.globals.unset(\"variable_key\");    pm.response.to.have.status(201);",
-									"    pm.globals.set(\"employee2Id\", pm.response.json().data.id);",
-									"    pm.globals.set(\"employee2Username\", pm.response.json().data.username);",
+									"    pm.environment.set(\"employee2Id\", pm.response.json().data.id);",
+									"    pm.environment.set(\"employee2Username\", pm.response.json().data.username);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -325,7 +325,7 @@
 									"    pm.response.to.have.status(200);",
 									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
 									"    var data = pm.response.json();",
-									"    pm.globals.set(\"E1_jwt\", data.jwt);",
+									"    pm.environment.set(\"E1_jwt\", data.jwt);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -372,7 +372,7 @@
 									"    pm.response.to.have.status(200);",
 									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
 									"    var data = pm.response.json();",
-									"    pm.globals.set(\"E2_jwt\", data.jwt);",
+									"    pm.environment.set(\"E2_jwt\", data.jwt);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1007,8 +1007,8 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"generalId\", pm.response.json().data.id);",
-									"    pm.globals.set(\"generalUsername\", pm.response.json().data.username);",
+									"    pm.environment.set(\"generalId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"generalUsername\", pm.response.json().data.username);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1607,8 +1607,8 @@
 							"script": {
 								"id": "c72bb823-8013-49d3-bccf-f9d363db64ec",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1621,7 +1621,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{E1_jwt}}",
+									"value": "{{M_jwt}}",
 									"type": "string"
 								}
 							]
@@ -1858,7 +1858,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"employee1ClockId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"employee1ClockId\", pm.response.json().data.id);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1913,7 +1913,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"managerClockId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"managerClockId\", pm.response.json().data.id);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1968,7 +1968,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"generalClockId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"generalClockId\", pm.response.json().data.id);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2161,7 +2161,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"employee1WTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
+									"    pm.environment.set(\"employee1WTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2209,7 +2209,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"manager1WTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
+									"    pm.environment.set(\"managerWTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2257,7 +2257,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"    pm.globals.set(\"generalWTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
+									"    pm.environment.set(\"generalWTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2297,6 +2297,20 @@
 				},
 				{
 					"name": "delete self last WT with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "50441812-8557-47fa-9762-f4cab93a007d",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2330,6 +2344,20 @@
 				},
 				{
 					"name": "delete self last WT with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ee645a2-97ba-420f-bae0-6550167968ce",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2363,6 +2391,20 @@
 				},
 				{
 					"name": "delete self last WT with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "62a6b0dd-31ab-41c6-8613-6f6427b403f9",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2684,8 +2726,8 @@
 							"script": {
 								"id": "3d81e3e1-13b8-45f1-913e-bb872626a343",
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2703,7 +2745,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-xsrf-token",
@@ -2737,8 +2779,8 @@
 							"script": {
 								"id": "3d81e3e1-13b8-45f1-913e-bb872626a343",
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2756,7 +2798,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-xsrf-token",
@@ -2790,8 +2832,8 @@
 							"script": {
 								"id": "d42714f3-9e0c-4ad3-b8ad-ba200eca9969",
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2809,7 +2851,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-xsrf-token",
@@ -2843,8 +2885,8 @@
 							"script": {
 								"id": "9f95b38a-1d7f-4c7f-9f44-b09c2ac3d27d",
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2862,7 +2904,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-xsrf-token",
