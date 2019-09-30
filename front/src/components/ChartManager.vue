@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-show="getStatus === 'success'">
+    <div id="chartManager" style="width:100%" v-show="getStatus === 'success'">
         <h1>Chart Manager</h1>
         <bar-chart
                 id="data"
@@ -12,8 +12,7 @@
                 labels='["hour"]'
                 line-colors='["#576277"]'
                 hide-hover="auto"
-        >
-        </bar-chart>
+        />
     </div>
 </template>
 <script>
@@ -56,3 +55,12 @@
         }
     }
 </script>
+
+<style>
+    #data {
+        width: 100%;
+    }
+    svg {
+        width: 100%;
+    }
+</style>
