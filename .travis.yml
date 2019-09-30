@@ -2,7 +2,6 @@
 _unit-tests: &unit-tests
   os: linux
   sudo: required
-  language: minimal
   services: docker
   cache:
     directories:
