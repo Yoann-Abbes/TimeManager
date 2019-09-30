@@ -432,6 +432,26 @@
         ],
         "operationId": "GothamWeb.ClocksController.create",
         "description": "Store the start when a user clock in, creates a workingtime when clock out"
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Show all users data",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "description": "Ok"
+          }
+        },
+        "parameters": [],
+        "operationId": "GothamWeb.UserController.index",
+        "description": "Show all users data"
       }
     }
   },

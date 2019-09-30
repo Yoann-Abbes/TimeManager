@@ -7,6 +7,10 @@ defmodule GothamWeb.UserController do
   alias Gotham.{Users, Repo, ErrorView}
   alias Gotham.Guardian
   alias Gotham.Auth
+  alias Gotham.Time
+  alias Gotham.Work
+  alias Gotham.Work.WorkingTime
+  alias Gotham.Time.Clocks
   alias Gotham.Auth.User
 
   action_fallback GothamWeb.FallbackController
@@ -21,12 +25,19 @@ defmodule GothamWeb.UserController do
   end
 
   def show_by_id(conn, %{"id" => id}) do
-    current_user = Guardian.Plug.current_resource(conn)
     user = Auth.get_user!(id)
-    if current_user.role_id == 1 do
-      json(conn, "You have to be Manager.")
-    end 
-    render(conn, "show.json", user: user)
+    current_user = Guardian.Plug.current_resource(conn)
+    current_role_id = Integer.to_string(current_user.role_id)
+    current_id = Integer.to_string(current_user.id)
+    team = current_user.team
+
+    if current_user.id == user.id
+    || current_user.role_id == 3
+    || (current_user.role_id == 2 && String.to_integer(id) in team)
+     do
+        render(conn, "show.json", user: user)
+    end
+      json(conn, "You have to be Manager.") 
   end
 
 
@@ -42,6 +53,7 @@ defmodule GothamWeb.UserController do
   def add_in_team(conn, %{"id" => id}) do
     user = Guardian.Plug.current_resource(conn)
 
+    IO.inspect user
     if user.role_id == 3 || user.role_id == 2 do
       Auth.add_member_to_team(user, id)
       user = Auth.get_user!(user.id)
@@ -64,11 +76,12 @@ defmodule GothamWeb.UserController do
 
   def list_team(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
+    IO.puts "-------------"
 
     if user.role_id == 3 || user.role_id == 2 do
       json(conn, user.team)
     else
-      {:error, :unauthorized}
+     {:error, :unauthorized}
     end
   end
 
@@ -90,21 +103,24 @@ defmodule GothamWeb.UserController do
   # end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
+
     user = Auth.get_user!(id)
     current_user = Guardian.Plug.current_resource(conn)
+    current_role_id = Integer.to_string(current_user.role_id)
+    current_id = Integer.to_string(current_user.id)
     team = current_user.team
-    if Map.has_key?(user_params, "role_id") && current_user.role_id !== 3 do
+    
+    if Map.has_key?(user_params, "role_id") && current_user.role_id !== 3 do  
       json(conn, "Only General Manager can promote.")
     else
-      # IO.puts user.role_id
-      # IO.puts current_user.role_id
-      #   if current_user.role_id == 3
-      #   || user.role_id == current_user.role_id
-      #   || (current_user.role_id == 2 && id in team) do
+       if current_user.id == user.id
+         || current_user.role_id == 3
+         || (current_user.role_id == 2 && String.to_integer(id) in team)
+          do
         with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
           render(conn, "show.json", user: user)
         end
-      # end
+      end
     end
     json(conn, "Unauthorized action")
   end
@@ -112,9 +128,28 @@ defmodule GothamWeb.UserController do
   def remove(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
     current_user = Guardian.Plug.current_resource(conn)
-    if current_user.id == id || current_user.role_id == 3 do
+    current_role_id = Integer.to_string(current_user.role_id)
+    current_id = Integer.to_string(current_user.id)
+    team = current_user.team
+
+    if current_user.id == user.id
+    || current_user.role_id == 3
+    || (current_user.role_id == 2 && String.to_integer(id) in team)
+     do
+      workingtimes = Work.get_working_time_list_by(id)
+      for workingtime <- workingtimes do
+        with {:ok, %WorkingTime{}} <- Work.delete_working_time(workingtime) do
+
+        end
+      end
+      clocks = Time.get_all_clocks_by_user_id!(id)
+      for clock <- clocks do
+        with {:ok, %Clocks{}} <- Time.delete_clocks(clock) do
+
+        end
+      end
       with {:ok, %User{}} <- Auth.delete_user(user) do
-        send_resp(conn, :no_content, "")
+        send_resp(conn, :no_content, "")    
       end
     else
       json(conn, "You are not allowed to delete this user.")

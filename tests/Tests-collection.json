@@ -1,0 +1,2936 @@
+{
+	"info": {
+		"_postman_id": "a851846d-32b7-4cff-af32-e4c5460d7888",
+		"name": "API Time manager",
+		"description": "Test all request API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "tests",
+			"item": [
+				{
+					"name": "sign in GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "704febda-8e03-40ff-bab9-e8f7ae954bf6",
+								"exec": [
+									"pm.test(\"Status code is 200 & contain jwt\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
+									"    var data = pm.response.json();",
+									"    pm.environment.set(\"GM_jwt\", data.jwt);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9785bfe3-e312-448c-8e8b-799b467f59f7",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\": \"admin\",\n\t\t\"password\": \"admin\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_in",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign up manager with GM",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e7ae92a9-c28b-4840-a664-31ad9e639436",
+								"exec": [
+									"postman.setEnvironmentVariable('rand', Math.floor(Math.random() * 1000));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "97506334-562f-4e6e-b74c-3fc77df94d0c",
+								"exec": [
+									"pm.test(\"Status code is 201 created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set(\"managerId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"managerUsername\", pm.response.json().data.username);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\": \"manager{{rand}}\",\n\t\t\"firstname\": \"ma\",\n\t\t\"lastname\": \"nager\",\n\t\t\"email\": \"manager{{rand}}@gotham.com\",\n\t\t\"password\": \"manager\",\n\t\t\"role_id\": 2\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_up",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_up"
+							]
+						},
+						"description": "create a manager"
+					},
+					"response": []
+				},
+				{
+					"name": "sign up employee1 with GM",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e7ae92a9-c28b-4840-a664-31ad9e639436",
+								"exec": [
+									"postman.setEnvironmentVariable('rand', Math.floor(Math.random() * 1000));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "02d007ce-f60a-4b94-b867-7406ab927ce3",
+								"exec": [
+									"pm.test(\"Status code is 201 created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set(\"employee1Id\", pm.response.json().data.id);",
+									"    pm.environment.set(\"employee1Username\", pm.response.json().data.username);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\": \"employee{{rand}}\",\n\t\t\"firstname\": \"em\",\n\t\t\"lastname\": \"ployee\",\n\t\t\"email\": \"employee{{rand}}@gotham.com\",\n\t\t\"password\": \"employee\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_up",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_up"
+							]
+						},
+						"description": "create a manager"
+					},
+					"response": []
+				},
+				{
+					"name": "sign in manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "00b03352-f1c0-4aa0-935d-98adef8d44a6",
+								"exec": [
+									"pm.test(\"Status code is 200 & contain jwt\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
+									"    var data = pm.response.json();",
+									"    pm.environment.set(\"M_jwt\", data.jwt);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\":\"{{managerUsername}}\",\n\t\t\"password\":\"manager\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_in",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign up employee2 with manager",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f62f7dfb-1c4f-478e-9879-7c4bb7cfb9d9",
+								"exec": [
+									"postman.setEnvironmentVariable('rand', Math.floor(Math.random() * 1000));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "092d74b5-7346-40af-b2a0-0ed901b63207",
+								"exec": [
+									"pm.test(\"Status code is 201 created\", function () {",
+									"pm.globals.unset(\"variable_key\");    pm.response.to.have.status(201);",
+									"    pm.environment.set(\"employee2Id\", pm.response.json().data.id);",
+									"    pm.environment.set(\"employee2Username\", pm.response.json().data.username);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\": \"employee{{rand}}\",\n\t\t\"firstname\": \"em\",\n\t\t\"lastname\": \"ployee\",\n\t\t\"email\": \"employee{{rand}}@gotham.com\",\n\t\t\"password\": \"employee\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_up",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign in employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ece5c5a8-0a5c-4a74-a17b-b649649b6537",
+								"exec": [
+									"pm.test(\"Status code is 200 & contain jwt\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
+									"    var data = pm.response.json();",
+									"    pm.environment.set(\"E1_jwt\", data.jwt);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\": \"{{employee1Username}}\",\n\t\t\"password\": \"employee\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_in",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign in employee2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "22e9a4b6-4176-41a4-8b7c-16aca5dbe10f",
+								"exec": [
+									"pm.test(\"Status code is 200 & contain jwt\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.text()).to.include(\"jwt\");",
+									"    var data = pm.response.json();",
+									"    pm.environment.set(\"E2_jwt\", data.jwt);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\": \"{{employee2Username}}\",\n\t\t\"password\": \"employee\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_in",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add manager in GM team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84fa9025-1c7b-46fb-ac0c-5f075c6651c9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{managerId}}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/add_in_team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"add_in_team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add employee1 in Manager team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3705bb99-87d3-4ab4-94be-359e130db698",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{employee1Id}}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/add_in_team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"add_in_team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add employee2 in Manager team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f79e5049-fc41-4d2e-93b4-523baaa63d56",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{employee2Id}}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/add_in_team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"add_in_team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete employee2 from manager team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a4ad5ff-9c0e-47a2-996b-ef1a86c486e2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{employee2Id}}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/remove_from_team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"remove_from_team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get team employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7030f5eb-8994-4816-9843-8c4abcd1b566",
+								"exec": [
+									"pm.test(\"Status code is 401 Unauthorized\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get team manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7030f5eb-8994-4816-9843-8c4abcd1b566",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get team GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7030f5eb-8994-4816-9843-8c4abcd1b566",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/team",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "see users with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4633b76f-e18c-45df-9c4e-2198a9d32dce",
+								"exec": [
+									"pm.test(\"Status code is 401 unauthorized\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "see users with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4633b76f-e18c-45df-9c4e-2198a9d32dce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "see users with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4633b76f-e18c-45df-9c4e-2198a9d32dce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/me",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "49a0634f-b8f8-43d7-ab95-c65b93d3371e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/me",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "49a0634f-b8f8-43d7-ab95-c65b93d3371e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/me",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "49a0634f-b8f8-43d7-ab95-c65b93d3371e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"generalId\", pm.response.json().data.id);",
+									"    pm.environment.set(\"generalUsername\", pm.response.json().data.username);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/me",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update employee1 self",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a50aa69f-34c9-461e-bf72-33d0526cf8ce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update employee1 with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a44f951-f3ec-4ec6-8a21-0d52543e065a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update employee1 with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update manager self",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update manager with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Unauthorized action\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Unauthorized action\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update manager with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update GM self",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update GM with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Unauthorized action\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Unauthorized action\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update GM with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6e9349d-eec9-458d-bca4-e01c9fc432f0",
+								"exec": [
+									"pm.test(\"Unauthorized action\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Unauthorized action\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"firstname\":\"patrick\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock in with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d2c7e4b-eabf-4b9d-b93f-a5482e6e4ffa",
+								"exec": [
+									"pm.test(\"Status code is 201 created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "03add6fe-0caf-4ea4-9917-a8ff858f0f1f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clocks\":{\n\t\t\"time\": \"2019-10-19 17:25:56\",\n\t\t\"status\": true\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock in with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c72bb823-8013-49d3-bccf-f9d363db64ec",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clocks\":{\n\t\t\"time\": \"2019-10-19 17:25:56\",\n\t\t\"status\": true\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock in with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "676915b5-bda8-4e97-ad06-e53ceb5176ea",
+								"exec": [
+									"pm.test(\"Status code is 201 created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clocks\":{\n\t\t\"time\": \"2019-10-19 17:25:56\",\n\t\t\"status\": true\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get current clock employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e036eac2-ae58-4444-aa82-48d5c6a9b2ce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get current clock manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e036eac2-ae58-4444-aa82-48d5c6a9b2ce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get current clock GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e036eac2-ae58-4444-aa82-48d5c6a9b2ce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock out employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fbe13ce9-6af9-4152-8cdd-e7c301268354",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"employee1ClockId\", pm.response.json().data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clocks\":{\n\t\t\"time\": \"2019-10-19 19:25:56\",\n\t\t\"status\": false\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock out manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fbe13ce9-6af9-4152-8cdd-e7c301268354",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"managerClockId\", pm.response.json().data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clocks\": {\n\t\t\"time\": \"2019-10-19 19:25:56\",\n\t\t\"status\": false\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock out GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fbe13ce9-6af9-4152-8cdd-e7c301268354",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"generalClockId\", pm.response.json().data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"clocks\":{\n\t\t\"time\": \"2019-10-19 19:25:56\",\n\t\t\"status\": false\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get workingtimes all with employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c96ebec-9d89-463c-9e76-776a2aa0838c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get workingtimes all with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "deebf1d8-1f90-4658-8758-50beb55d932b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get workingtimes all with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63e5c320-b355-41c9-a7c6-1d6cdffb97f4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get workingtimes  employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b79295e8-fc3e-46fd-8a67-be39a46f8bb9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"employee1WTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get workingtimes manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b79295e8-fc3e-46fd-8a67-be39a46f8bb9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"managerWTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get workingtimes GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b79295e8-fc3e-46fd-8a67-be39a46f8bb9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"generalWTId\", pm.response.json().data[pm.response.json().data.length - 1].id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes/{{generalId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"{{generalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete self last WT with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "50441812-8557-47fa-9762-f4cab93a007d",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes/{{employee1WTId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"{{employee1WTId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete self last WT with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ee645a2-97ba-420f-bae0-6550167968ce",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes/{{managerWTId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"{{managerWTId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete self last WT with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "62a6b0dd-31ab-41c6-8613-6f6427b403f9",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/workingtimes/{{generalWTId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"{{generalWTId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete self clock with employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a626d9f0-4dd9-43fc-934f-811d040db48d",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{employee1ClockId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{employee1ClockId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete self clock with manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1effeb4d-4af5-491a-ae25-58232c74767e",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{managerClockId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{managerClockId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete self clock with GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1effeb4d-4af5-491a-ae25-58232c74767e",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/clocks/{{generalClockId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"clocks",
+								"{{generalClockId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89dcbc23-9c20-4a32-b7d3-1a06787e89e0",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{employee1Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{employee1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete employee2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2c8ab094-5d15-4465-9469-c3ec2f0340ce",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E2_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{employee2Id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{employee2Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "08d70b07-b85b-471b-a6ba-0c9e40a3cae7",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/{{managerId}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{managerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke token employee1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3d81e3e1-13b8-45f1-913e-bb872626a343",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E1_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-xsrf-token",
+								"value": "{{E1_jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_out",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke token employee2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3d81e3e1-13b8-45f1-913e-bb872626a343",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{E2_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-xsrf-token",
+								"type": "text",
+								"value": "{{E2_jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_out",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke token manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d42714f3-9e0c-4ad3-b8ad-ba200eca9969",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{M_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-xsrf-token",
+								"type": "text",
+								"value": "{{M_jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_out",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke token GM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9f95b38a-1d7f-4c7f-9f44-b09c2ac3d27d",
+								"exec": [
+									"pm.test(\"Status code is 204 No-Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{GM_jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-xsrf-token",
+								"type": "text",
+								"value": "{{GM_jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{server}}/api/users/sign_out",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_out"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
