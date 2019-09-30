@@ -1,65 +1,80 @@
 <template>
-    <div class="ClockManager">
-        <h1> ClockManager  </h1>
-        <div v-if="!!getStatus">
-            on affiche
+    <div class="ClockManager" style="width:100%">
+        <div v-show="getClock.status === 'loading'">
+            <md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
         </div>
-        <div v-else>
-            on affiche pas
+        <div class="chrono-content" style="width:100%" v-show="getClock.status === 'success'">
+            <h2>Report Daily work</h2>
+            <div class="chrono-time">
+                <span>{{refresh | chrono}}</span>
+            </div>
+            <div v-if="!$route.params.userId">
+                <button @click.prevent="clock">{{ (getClock.boolean === false) ? 'clock in' : 'clock out'}}</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { clockManagerService } from "../_services/clockmanager.service";
-
     export default {
         data(){
             return {
-                startDateTime: null,
-                status: false
+
             }
         },
+        props: ['user'],
         computed: {
-            getStatus(){
-                return this.status
+            getClock(){
+                return this.$store.getters['clockModule/getCurrentClock']
+            },
+            refresh(){
+                return this.$store.getters['clockModule/getRefreshTime']
+            },
+            getBool(){
+                return this.$store.getters['clockModule/getBool']
             }
         },
         methods:{
-            refresh(){
-
-            },
             clock(){
-                clockManagerService.updateClock(this.$root.user.id, this.startDateTime, this.status).then(
-                    success => {
-                        this.startDateTime = success.data.data.time
-                        this.status = success.data.data.status
-                    },
-                    error => {
-                        console.log(error)
-                    }
-                )
+                const userId = this.user.id
+                this.$store.dispatch('clockModule/createClock',{userId})
             }
         },
         mounted() {
-            clockManagerService.getClock(this.$root.user.id).then(
-                success => {
-                    this.startDateTime = success.data.data.time;
-                    this.status = success.data.data.status
-                },
-                error => {
-                    clockManagerService.createClock(this.$root.user.id).then(
-                        success => {
-                            this.startDateTime = success.data.data.time
-                            this.status = success.data.data.status
-                        },
-                        error => {
-                            console.log(error)
-                        }
-                    )
-                }
-            )
-            this.interval = setInterval(this.refresh, 1000)
+            const userId = this.user.id
+            this.$store.dispatch('clockModule/getClock',{userId})
+        },
+        filters:{
+            chrono(value){
+
+                let hour = Math.floor(value/3600)
+                let min = Math.floor((value - hour*3600)/60)
+                let sec = Math.floor(value - hour*3600 - min*60)
+
+                hour = (hour > 9) ? hour : "0" + hour
+                min = (min > 9) ? min : "0" + min
+                sec = (sec > 9) ? sec : "0" + sec
+
+                return hour + ":" + min + ":" + sec
+            }
+        },
+        beforeDestroy () {
+            this.$store.dispatch('clockModule/resetInterval')
         }
     }
 </script>
+
+<style>
+    html{
+        box-sizing: border-box;
+    }
+    .chrono-content{
+        text-align: center;
+    }
+    .chrono-time{
+        height:50px;
+        position:relative;
+        font-size: 50px;
+        margin-bottom:5px;
+    }
+</style>

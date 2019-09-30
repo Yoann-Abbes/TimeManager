@@ -1,14 +1,15 @@
 <template>
   <div>
-home
+    HOME
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  methods: {
+    logout(){
+      this.$store.dispatch('authModule/logout')
+    }
   }
 }
 </script>

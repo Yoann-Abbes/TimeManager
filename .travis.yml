@@ -1,8 +1,7 @@
-# Integration tests
-_integration-tests: &integration-tests
+ # Integration tests
+_unit-tests: &unit-tests
   os: linux
   sudo: required
-  language: minimal
   services: docker
   cache:
     directories:
@@ -10,13 +9,27 @@ _integration-tests: &integration-tests
   install:
     - sudo sysctl -w vm.max_map_count=262144
   script:
-    - docker-compose -f ./test.yml up
+    - ./tests/test.sh
+
+
+_app-deploy: &app-deploy
+  stage: Deployments
+  language: minimal
+  services: docker
+  if: type=push AND branch=master
+  script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build ./back/ -t yabbes/time-manager-back
+    - docker build ./front/ -t yabbes/time-manager-front
+    - docker push yabbes/time-manager-back:latest
+    - docker push yabbes/time-manager-front:latest
 
 jobs:
   include:
-    # ---------------------------------------
-    # Integration tests
-    # ---------------------------------------
-    - <<: *integration-tests
-      stage: Integration tests
+    - <<: *unit-tests
+      stage: Unit tests
       name: Unit Tests
+
+    - <<: *app-deploy
+      stage: Deployments
+      name: Deployment

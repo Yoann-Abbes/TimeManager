@@ -7,8 +7,8 @@ defmodule Gotham.Time.Clocks do
     field :status, :boolean, default: false
     field :time, :naive_datetime
     field :user_id, :id
-
     timestamps()
+
   end
 
   @doc false

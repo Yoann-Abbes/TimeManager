@@ -7,10 +7,10 @@ defmodule Gotham.Mixfile do
       version: "0.0.1",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+      compilers: [:phoenix, :gettext, :phoenix_swagger] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
     ]
   end
 
@@ -35,6 +35,9 @@ defmodule Gotham.Mixfile do
     [
       {:phoenix, "~> 1.3.4"},
       {:json, "~> 1.2"},
+      {:guardian, "~> 1.2"},
+      {:bcrypt_elixir, "~> 2.0"},
+      {:jason, "~> 1.1"},
       {:phoenix_pubsub, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
       {:plug_cowboy, "~> 1.0"},
@@ -44,6 +47,8 @@ defmodule Gotham.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
+      {:phoenix_swagger, git: "https://github.com/xerions/phoenix_swagger.git"},
+      {:ex_json_schema, "~> 0.5"},
       {:cowboy, "~> 1.0"}
     ]
   end
@@ -58,7 +63,8 @@ defmodule Gotham.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      "swagger": ["phx.swagger.generate priv/static/swagger.json --router Gotham.Router --endpoint Gotham.Endpoint"]
     ]
   end
 end

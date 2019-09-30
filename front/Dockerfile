@@ -5,7 +5,8 @@ RUN mkdir /app/front
 COPY . /app/front/
 WORKDIR /app/front
 
-RUN npm i -g pm2
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
 RUN npm install
 
-CMD ["pm2-runtime", "start", "/app/front/pm2-dev.json"]

@@ -1,0 +1,123 @@
+{
+	"id": "b104afd1-b109-46c1-b9fa-8ec55fc3a9e5",
+	"name": "API Time manager",
+	"values": [
+		{
+			"key": "server",
+			"value": "localhost:4000",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "GM_jwt",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "M_jwt",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "E1_jwt",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "E2_jwt",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "managerId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "managerUsername",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "employee1Id",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "employee1Username",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "employee2Id",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "employee2Username",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "generalId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "employee1ClockId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "managerClockId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "generalClockId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "employee1WTId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "managerWTId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "generalWTId",
+			"value": "",
+			"description": "",
+			"enabled": true
+		},
+		{
+			"key": "rand",
+			"value": "",
+			"description": "",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2019-09-30T14:53:45.222Z",
+	"_postman_exported_using": "Postman/6.7.1"
+}
