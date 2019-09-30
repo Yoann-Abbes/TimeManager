@@ -49,8 +49,8 @@ defmodule GothamWeb.Router do
 
     get "/me", UserController, :show
     get "/", UserController, :index
-    get "/:id", UserController, :show_by_id
     get "/team", UserController, :list_team
+    get "/:id", UserController, :show_by_id
     post "/", UserController, :create
     post "/add_in_team", UserController, :add_in_team
     post "/remove_from_team", UserController, :remove_from_team
