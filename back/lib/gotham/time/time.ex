@@ -38,14 +38,31 @@ defmodule Gotham.Time do
   """
   def get_clocks!(id), do: Repo.get!(Clocks, id)
 
+  def get_clocks_by_user_id!(user_id) do
+    Repo.all(
+      from b in Clocks,
+      where: b.user_id == ^user_id,
+      order_by: [desc: :inserted_at],
+      limit: 1,
+      select: b
+    )
+  end
+
+
+  def get_all_clocks_by_user_id!(user_id) do
+    Repo.all(
+      from b in Clocks,
+      where: b.user_id == ^user_id,
+      select: b
+    )
+  end
+
 
   def get_time_clocks_by!(user_id, status) do
     Repo.all(
       from b in Clocks,
       where: b.user_id == ^user_id,
       where: b.status == ^status,
-      order_by: [desc: :inserted_at],
-      limit: 1,
       select: b.time
     )
   end

@@ -76,6 +76,8 @@ defmodule Gotham.Auth do
 
   def get_user_by!(email, username), do: Repo.get_by!(User, email: email, username: username)
 
+  def get_user_by_email!(email), do: Repo.get_by!(User, email: email)
+
   def get_by_username(username), do: Repo.get_by!(User, username: username)
 
   @doc """

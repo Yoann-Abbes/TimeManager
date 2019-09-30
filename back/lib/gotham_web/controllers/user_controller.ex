@@ -7,6 +7,10 @@ defmodule GothamWeb.UserController do
   alias Gotham.{Users, Repo, ErrorView}
   alias Gotham.Guardian
   alias Gotham.Auth
+  alias Gotham.Time
+  alias Gotham.Work
+  alias Gotham.Work.WorkingTime
+  alias Gotham.Time.Clocks
   alias Gotham.Auth.User
 
   action_fallback GothamWeb.FallbackController
@@ -21,11 +25,16 @@ defmodule GothamWeb.UserController do
   end
 
   def show_by_id(conn, %{"id" => id}) do
-    current_user = Guardian.Plug.current_resource(conn)
-    current_id = Integer.to_string(current_user.id)
     user = Auth.get_user!(id)
-    
-    if current_id == id || current_id == 3 do
+    current_user = Guardian.Plug.current_resource(conn)
+    current_role_id = Integer.to_string(current_user.role_id)
+    current_id = Integer.to_string(current_user.id)
+    team = current_user.team
+
+    if current_user.id == user.id
+    || current_user.role_id == 3
+    || (current_user.role_id == 2 && String.to_integer(id) in team)
+     do
         render(conn, "show.json", user: user)
     end
       json(conn, "You have to be Manager.") 
@@ -127,8 +136,20 @@ defmodule GothamWeb.UserController do
     || current_user.role_id == 3
     || (current_user.role_id == 2 && String.to_integer(id) in team)
      do
+      workingtimes = Work.get_working_time_list_by(id)
+      for workingtime <- workingtimes do
+        with {:ok, %WorkingTime{}} <- Work.delete_working_time(workingtime) do
+
+        end
+      end
+      clocks = Time.get_all_clocks_by_user_id!(id)
+      for clock <- clocks do
+        with {:ok, %Clocks{}} <- Time.delete_clocks(clock) do
+
+        end
+      end
       with {:ok, %User{}} <- Auth.delete_user(user) do
-        send_resp(conn, :no_content, "")
+        send_resp(conn, :no_content, "")    
       end
     else
       json(conn, "You are not allowed to delete this user.")

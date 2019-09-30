@@ -77,6 +77,7 @@ defmodule GothamWeb.Router do
     get "/", ClocksController, :index
     get "/:id", ClocksController, :show
     post "/:id", ClocksController, :create
+    delete "/:id", ClocksController, :remove
   end
 
   scope "/api/swagger" do

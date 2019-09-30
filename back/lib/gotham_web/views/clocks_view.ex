@@ -18,6 +18,8 @@ defmodule GothamWeb.ClocksView do
   def render("clocks.json", %{clocks: clocks}) do
     %{id: clocks.id,
       time: clocks.time,
-      status: clocks.status}
+      status: clocks.status,
+      user_id: clocks.user_id
+    }
   end
 end
