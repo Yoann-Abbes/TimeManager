@@ -6,6 +6,7 @@ do
   sleep 2
 done
 
+mix ecto.reset
 
 # Create, migrate, and seed database if it doesn't exist.
 if [[ -z `psql -Atqc "\\list $PGDATABASE"` ]]; then
